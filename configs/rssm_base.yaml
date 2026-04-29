@@ -1,0 +1,55 @@
+# TwitWave RSSM – Base config  (~45M params, A100 40GB)
+# All model, training, and eval settings in one place.
+
+# ── Model ─────────────────────────────────────────────────────────────────────
+model:
+  embed_dim: 64         # ticker embedding dimension (both e_ret and e_dec tables)
+  d_enc: 256            # set encoder output dimension
+  h_dim: 512            # GRU deterministic state dimension
+  s_dim: 256            # stochastic latent dimension  (z_dim = h_dim + s_dim = 768)
+  n_heads: 8            # attention heads in set encoder + temporal encoder
+  n_layers: 2           # transformer layers in set encoder + temporal encoder
+  window_k: 8           # temporal encoder rolling window size (weeks)
+  mlp_hidden: 256       # hidden units in each per-feature MLP in the decoder
+  feature_dim: 5        # fixed: [log_attn, bullish_rate, bearish_rate, unlabeled_rate, attn_growth]
+  top_k: 100            # active tickers per week (used for dataset construction)
+  dropout: 0.1
+
+# ── Training ──────────────────────────────────────────────────────────────────
+train:
+  seq_len: 52           # BPTT sequence length in weeks (~1 year)
+  batch_size: 32
+  num_workers: 4
+  lr: 3.0e-4
+  weight_decay: 1.0e-5
+  grad_clip: 10.0
+  max_epochs: 100
+  warmup_epochs: 5      # linear LR warmup
+  patience: 15          # early stopping patience on val ELBO
+  beta_start: 0.1       # KL weight at epoch 0
+  beta_end: 1.0         # KL weight after annealing
+  beta_anneal_epochs: 30
+  free_nats: 3.0        # KL free-bits threshold
+  lambda_mse: 1.0       # MSE loss weight relative to BCE
+  bce_pos_weight: 10.0  # BCE positive-class upweight (~100 positives out of ~vocab_size)
+
+# ── Evaluation ────────────────────────────────────────────────────────────────
+eval:
+  # prediction
+  horizons: [1, 4, 13]  # forecast horizons in weeks (next week / ~1 month / ~1 quarter)
+  context_len: 52        # posterior warm-up window (weeks) before prediction phase
+  n_samples: 20          # Monte Carlo samples for uncertainty estimates
+  use_prior_mean: true   # deterministic metrics: use prior mean, not sample
+  virality_top_n: 20     # tickers considered "viral" for AUC-ROC
+  virality_horizon: 4    # weeks within which entry to top-N counts as viral
+  precision_at_k: 100    # set-membership Precision@K
+  # KL analysis
+  kl_spike_z_threshold: 2.0
+  # attention analysis
+  attn_top_n: 50
+  # latent clustering
+  latent_n_clusters: 5
+  latent_tsne_perp: 30
+  latent_umap_neighbors: 15
+  # counterfactual
+  cf_delta: 3.0

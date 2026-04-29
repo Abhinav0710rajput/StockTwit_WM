@@ -1,0 +1,46 @@
+# TwitWave RSSM – Debug config  (CPU smoke-test, ~2 minutes)
+
+model:
+  embed_dim: 16
+  d_enc: 32
+  h_dim: 64
+  s_dim: 32             # z_dim = 96
+  n_heads: 2
+  n_layers: 1
+  window_k: 2
+  mlp_hidden: 32
+  feature_dim: 5
+  top_k: 100
+  dropout: 0.0
+
+train:
+  seq_len: 8
+  batch_size: 4
+  num_workers: 0        # no multiprocessing for easy debugging
+  lr: 3.0e-4
+  weight_decay: 1.0e-5
+  grad_clip: 10.0
+  max_epochs: 2
+  warmup_epochs: 1
+  patience: 999         # disable early stopping
+  beta_start: 0.1
+  beta_end: 1.0
+  beta_anneal_epochs: 2
+  free_nats: 3.0
+  lambda_mse: 1.0
+  bce_pos_weight: 10.0
+
+eval:
+  horizons: [1]
+  context_len: 8
+  n_samples: 3
+  use_prior_mean: true
+  virality_top_n: 10
+  virality_horizon: 1
+  precision_at_k: 100
+  kl_spike_z_threshold: 2.0
+  attn_top_n: 20
+  latent_n_clusters: 3
+  latent_tsne_perp: 5
+  latent_umap_neighbors: 5
+  cf_delta: 1.0

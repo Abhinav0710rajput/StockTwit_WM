@@ -1,0 +1,46 @@
+# TwitWave RSSM – Large config  (~180M params, A100 80GB / multi-GPU)
+
+model:
+  embed_dim: 128
+  d_enc: 512
+  h_dim: 1024
+  s_dim: 512            # z_dim = 1536
+  n_heads: 16
+  n_layers: 4
+  window_k: 16
+  mlp_hidden: 512
+  feature_dim: 5
+  top_k: 100
+  dropout: 0.15
+
+train:
+  seq_len: 52
+  batch_size: 16        # reduce due to larger model
+  num_workers: 4
+  lr: 1.0e-4            # slightly lower lr for larger model
+  weight_decay: 1.0e-5
+  grad_clip: 10.0
+  max_epochs: 100
+  warmup_epochs: 10
+  patience: 20
+  beta_start: 0.1
+  beta_end: 1.0
+  beta_anneal_epochs: 40
+  free_nats: 3.0
+  lambda_mse: 1.0
+  bce_pos_weight: 10.0
+
+eval:
+  horizons: [1, 4, 13]
+  context_len: 52
+  n_samples: 20
+  use_prior_mean: true
+  virality_top_n: 20
+  virality_horizon: 4
+  precision_at_k: 100
+  kl_spike_z_threshold: 2.0
+  attn_top_n: 50
+  latent_n_clusters: 5
+  latent_tsne_perp: 30
+  latent_umap_neighbors: 15
+  cf_delta: 3.0
