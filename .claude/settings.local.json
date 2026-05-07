@@ -9,7 +9,19 @@
       "Bash(conda create *)",
       "Bash(conda run *)",
       "Bash(conda install *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(conda env *)",
+      "Bash(conda --version)",
+      "Bash(nvidia-smi)",
+      "Bash(nvcc --version)",
+      "Bash(wait *)",
+      "Bash(conda info *)",
+      "Bash(/home/ar10026/.conda/envs/wm_ml/bin/pip install *)",
+      "Bash(/home/ar10026/.conda/envs/wm_ml/bin/python *)",
+      "Bash(/home/ar10026/.conda/envs/wm_ml/bin/pip show *)",
+      "Bash(PYTHONPATH=/home/ar10026/StockTwit_WM /home/ar10026/.conda/envs/wm_ml/bin/python *)",
+      "Bash(PYTHONPATH=/home/ar10026/StockTwit_WM /home/ar10026/.conda/envs/wm_ml/bin/python scripts/2_b_train_rssm.py --cfg configs/debug.yaml --data_dir data/processed_week --out_dir outputs/debug --seed 42)",
+      "Bash(echo \"EXIT: $?\")"
     ]
   }
 }
