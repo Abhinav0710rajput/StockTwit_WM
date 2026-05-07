@@ -153,7 +153,17 @@ def main() -> None:
         device=device,
     )
     if args.resume:
-        trainer.load_checkpoint(args.resume)
+        resume_path = args.resume
+        if resume_path == "latest":
+            last_pt = out_dir / "checkpoints" / "last.pt"
+            if not last_pt.exists():
+                log.warning("--resume latest: no last.pt found in %s, starting fresh", out_dir / "checkpoints")
+                resume_path = None
+            else:
+                resume_path = str(last_pt)
+                log.info("--resume latest → %s", resume_path)
+        if resume_path:
+            trainer.load_checkpoint(resume_path)
 
     log.info("Starting training → %s", out_dir)
     trainer.train()

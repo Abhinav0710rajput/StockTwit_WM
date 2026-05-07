@@ -38,6 +38,12 @@ class BetaScheduler:
         t = min(self._step / max(self.total_steps, 1), 1.0)
         return self.beta_start + t * (self.beta_end - self.beta_start)
 
+    def state_dict(self) -> dict:
+        return {"_step": self._step}
+
+    def load_state_dict(self, state: dict) -> None:
+        self._step = state["_step"]
+
 
 class CosineWarmupScheduler(_LRScheduler):
     """

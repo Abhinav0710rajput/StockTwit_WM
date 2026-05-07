@@ -68,6 +68,7 @@ class Trainer:
 
         self.global_step = 0
         self.best_val_loss = float("inf")
+        self.start_epoch = 1
 
         # wandb
         self.use_wandb = config.get("use_wandb", False)
@@ -89,7 +90,7 @@ class Trainer:
 
     # ------------------------------------------------------------------
     def train(self) -> None:
-        for epoch in range(1, self.cfg["max_epochs"] + 1):
+        for epoch in range(self.start_epoch, self.cfg["max_epochs"] + 1):
             t0 = time.time()
             train_metrics = self._train_epoch(epoch)
             val_metrics   = self._val_epoch()
@@ -109,12 +110,15 @@ class Trainer:
                     {"epoch": epoch, **{f"val/{k}": v for k, v in val_metrics.items()}}
                 )
 
+            # Always write last.pt so we can resume from the most recent epoch
+            self.save_checkpoint("last.pt", epoch=epoch)
+
             if epoch % self.cfg.get("checkpoint_every", 5) == 0:
-                self.save_checkpoint(f"epoch_{epoch:03d}.pt")
+                self.save_checkpoint(f"epoch_{epoch:03d}.pt", epoch=epoch)
 
             if val_metrics["total"] < self.best_val_loss:
                 self.best_val_loss = val_metrics["total"]
-                self.save_checkpoint("best.pt")
+                self.save_checkpoint("best.pt", epoch=epoch)
 
         # Save KL log
         with open(self.log_dir / "kl_log.json", "w") as f:
@@ -230,15 +234,19 @@ class Trainer:
         return {k: v / max(n_batches, 1) for k, v in running.items()}
 
     # ------------------------------------------------------------------
-    def save_checkpoint(self, name: str) -> None:
+    def save_checkpoint(self, name: str, epoch: int = 0) -> None:
         path = self.ckpt_dir / name
         torch.save({
-            "model_state":     self.model.state_dict(),
-            "optimizer_state": self.optimizer.state_dict(),
-            "global_step":     self.global_step,
-            "best_val_loss":   self.best_val_loss,
-            "model_cfg":       self.model.cfg.__dict__,
-            "train_cfg":       self.cfg,
+            "model_state":      self.model.state_dict(),
+            "optimizer_state":  self.optimizer.state_dict(),
+            "lr_sched_state":   self.lr_sched.state_dict(),
+            "beta_sched_state": self.beta_sched.state_dict(),
+            "global_step":      self.global_step,
+            "epoch":            epoch,
+            "best_val_loss":    self.best_val_loss,
+            "model_cfg":        self.model.cfg.__dict__,
+            "train_cfg":        self.cfg,
+            "kl_log":           self.kl_log,
         }, path)
         print(f"[trainer] checkpoint → {path}")
 
@@ -246,6 +254,16 @@ class Trainer:
         ckpt = torch.load(path, map_location=self.device)
         self.model.load_state_dict(ckpt["model_state"])
         self.optimizer.load_state_dict(ckpt["optimizer_state"])
-        self.global_step   = ckpt["global_step"]
-        self.best_val_loss = ckpt["best_val_loss"]
-        print(f"[trainer] loaded checkpoint from {path} (step {self.global_step})")
+        if "lr_sched_state" in ckpt:
+            self.lr_sched.load_state_dict(ckpt["lr_sched_state"])
+        if "beta_sched_state" in ckpt:
+            self.beta_sched.load_state_dict(ckpt["beta_sched_state"])
+        self.global_step   = ckpt.get("global_step", 0)
+        self.best_val_loss = ckpt.get("best_val_loss", float("inf"))
+        self.kl_log        = ckpt.get("kl_log", [])
+        self.start_epoch   = ckpt.get("epoch", 0) + 1
+        print(
+            f"[trainer] resumed from {path} "
+            f"(epoch {ckpt.get('epoch', '?')} → starting epoch {self.start_epoch}, "
+            f"step {self.global_step})"
+        )
