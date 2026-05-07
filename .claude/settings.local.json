@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/ush/Desktop/StockTwit_WM status)",
+      "Bash(git -C /Users/ush/Desktop/StockTwit_WM log --oneline -5)",
+      "Bash(git -C /Users/ush/Desktop/StockTwit_WM log --oneline origin/main..HEAD)",
+      "Bash(git -C /Users/ush/Desktop/StockTwit_WM show --stat HEAD)",
+      "Bash(git -C /Users/ush/Desktop/StockTwit_WM show --name-only HEAD)"
+    ]
+  }
+}
