@@ -111,6 +111,10 @@ class TwitWaveDataset(Dataset):
         std  = vals.std(axis=0) + 1e-6
         return {"mean": mean, "std": std}
 
+    @property
+    def norm_stats(self) -> dict:
+        return {"mean": self.mean, "std": self.std}
+
     # ------------------------------------------------------------------
     def __len__(self) -> int:
         return max(0, self.total_weeks - self.seq_len + 1)

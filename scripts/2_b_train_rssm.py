@@ -33,7 +33,7 @@ log = logging.getLogger(__name__)
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--cfg",      type=str, required=True, help="Path to unified YAML config")
-    p.add_argument("--data_dir", type=str, default="data/processed")
+    p.add_argument("--data_dir", type=str, default="data/processed_week")
     p.add_argument("--out_dir",  type=str, default="outputs/rssm_base")
     p.add_argument("--resume",   type=str, default=None, help="Checkpoint path to resume from")
     p.add_argument("--seed",     type=int, default=42)
@@ -84,13 +84,13 @@ def main() -> None:
 
     ds_train = TwitWaveDataset(
         panel=panel_train, vocab=vocab,
-        seq_len=tcfg["seq_len"], window_k=mcfg["window_k"],
-        mode="dynamic", split="train", normalise=True,
+        chunk_len=tcfg["seq_len"], window_k=mcfg["window_k"],
+        mode="dynamic", split="train",
     )
     ds_val = TwitWaveDataset(
         panel=panel_val, vocab=vocab,
-        seq_len=tcfg["seq_len"], window_k=mcfg["window_k"],
-        mode="dynamic", split="val", normalise=True,
+        chunk_len=tcfg["seq_len"], window_k=mcfg["window_k"],
+        mode="dynamic", split="val",
         norm_stats=ds_train.norm_stats,
     )
 
@@ -130,26 +130,29 @@ def main() -> None:
              mcfg["embed_dim"], model_cfg.z_dim, f"{n_params:,}")
 
     # ── trainer ───────────────────────────────────────────────────────────────
+    train_cfg = {
+        "output_dir":         str(out_dir),
+        "lr":                 tcfg["lr"],
+        "max_epochs":         tcfg["max_epochs"],
+        "grad_clip":          tcfg["grad_clip"],
+        "beta_start":         tcfg["beta_start"],
+        "beta_end":           tcfg["beta_end"],
+        "beta_anneal_epochs": tcfg["beta_anneal_epochs"],
+        "free_nats":          tcfg["free_nats"],
+        "lambda_":            tcfg["lambda_mse"],
+        "pos_weight":         tcfg["bce_pos_weight"],
+        "use_wandb":          args.wandb,
+        "project_name":       args.wandb_project,
+    }
     trainer = Trainer(
-        model=model, train_loader=train_loader, val_loader=val_loader,
-        device=device, output_dir=out_dir,
-        lr                 = tcfg["lr"],
-        weight_decay       = tcfg["weight_decay"],
-        max_epochs         = tcfg["max_epochs"],
-        grad_clip          = tcfg["grad_clip"],
-        beta_start         = tcfg["beta_start"],
-        beta_end           = tcfg["beta_end"],
-        beta_anneal_epochs = tcfg["beta_anneal_epochs"],
-        free_nats          = tcfg["free_nats"],
-        lambda_mse         = tcfg["lambda_mse"],
-        bce_pos_weight     = tcfg["bce_pos_weight"],
-        warmup_epochs      = tcfg["warmup_epochs"],
-        patience           = tcfg["patience"],
-        use_wandb          = args.wandb,
-        wandb_project      = args.wandb_project,
-        wandb_run_name     = args.wandb_run,
-        resume_ckpt        = args.resume,
+        model=model,
+        train_loader=train_loader,
+        val_loader=val_loader,
+        config=train_cfg,
+        device=device,
     )
+    if args.resume:
+        trainer.load_checkpoint(args.resume)
 
     log.info("Starting training → %s", out_dir)
     trainer.train()
