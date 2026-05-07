@@ -113,7 +113,7 @@ def main() -> None:
 
     # ── Option 1: use KL log written during training ──────────────────────────
     if args.use_train_kl:
-        kl_log_path = Path(args.model_dir) / "kl_log.json"
+        kl_log_path = Path(args.model_dir) / "logs" / "kl_log.json"
         if kl_log_path.exists():
             kl_df = load_kl_log(kl_log_path)
             log.info("Loaded training KL log: %d epochs", len(kl_df))
@@ -160,6 +160,35 @@ def main() -> None:
 
     full_kl = pd.concat(all_kl, ignore_index=True)
     save_kl_csv(full_kl, out_dir / "kl_all_splits.csv")
+
+    # ── Re-compute spike stats using val baseline for cross-split z-scores ────
+    # Per-split z-scores are relative to the split's own mean/std, which can
+    # miss spikes if the entire split is elevated (e.g., all of test1 is COVID).
+    # Use val KL mean/std as the stable-baseline reference instead.
+    val_kl_df = next((d for d in all_kl if d["split"].iloc[0] == "val"), None)
+    if val_kl_df is not None and len(val_kl_df) > 1:
+        val_mean = val_kl_df["kl"].mean()
+        val_std  = val_kl_df["kl"].std() + 1e-8
+        log.info("Val KL baseline: mean=%.4f  std=%.4f", val_mean, val_std)
+        for split_df in all_kl:
+            sp = split_df["split"].iloc[0]
+            z_scores = (split_df["kl"].values - val_mean) / val_std
+            n_spikes = int((z_scores > args.spike_z).sum())
+            spike_weeks = split_df["week"].values[z_scores > args.spike_z].tolist()
+            baseline_stats = {
+                "baseline": "val",
+                "val_mean": float(val_mean),
+                "val_std":  float(val_std),
+                "n_spikes_vs_val": n_spikes,
+                "spike_weeks_vs_val": [str(w) for w in spike_weeks],
+                "max_z_vs_val": float(z_scores.max()),
+            }
+            path = out_dir / f"spike_stats_{sp}_vs_val.json"
+            with open(path, "w") as f:
+                json.dump(baseline_stats, f, indent=2)
+            log.info("[%s vs val] Spikes (z>%.1f): %d  max_z=%.2f  weeks=%s",
+                     sp, args.spike_z, n_spikes, float(z_scores.max()),
+                     spike_weeks[:5])
 
     # ── Plots ─────────────────────────────────────────────────────────────────
     log.info("Generating KL timeline plots")

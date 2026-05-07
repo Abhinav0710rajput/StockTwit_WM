@@ -29,7 +29,6 @@ import torch
 from data.vocab import Vocabulary
 from eval.utils import load_rssm
 from eval.attention_analysis import (
-    extract_attention_matrices,
     diagonal_vs_offdiagonal,
     plot_attention_heatmap,
     plot_attention_evolution,
@@ -66,6 +65,7 @@ def main() -> None:
     out_dir = Path(args.out_dir) if args.out_dir else Path(args.model_dir) / "results" / "attention"
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "heatmaps").mkdir(exist_ok=True)
+    (out_dir / "matrices").mkdir(exist_ok=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     data_dir = Path(args.data_dir)
@@ -104,11 +104,19 @@ def main() -> None:
                 feat_seq, ids_seq = predictor.build_context(ctx_panel, vocab, max_len=args.context_len)
                 A_t = predictor.extract_attention(feat_seq, ids_seq)  # (K, K)
                 if A_t is not None:
-                    attn_by_week[str(week)] = A_t.cpu().numpy()
+                    A_np = A_t.cpu().numpy()
+                    attn_by_week[str(week)] = A_np
                     active = ids_seq[-1].cpu().numpy()
-                    ticker_by_week[str(week)] = [
-                        vocab.decode(int(idx)) for idx in active if int(idx) != 0
-                    ]
+                    tickers = [vocab.decode(int(idx)) for idx in active if int(idx) != 0]
+                    ticker_by_week[str(week)] = tickers
+
+                    # Save raw matrix and its ticker index for this week
+                    week_tag = str(week).replace("-", "")
+                    mat_dir  = out_dir / "matrices" / split
+                    mat_dir.mkdir(parents=True, exist_ok=True)
+                    np.save(mat_dir / f"A_{week_tag}.npy", A_np)
+                    with open(mat_dir / f"tickers_{week_tag}.json", "w") as fj:
+                        json.dump(tickers, fj)
             except Exception as e:
                 log.debug("Attention extraction failed at %s: %s", week, e)
                 continue

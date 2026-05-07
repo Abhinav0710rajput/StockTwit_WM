@@ -2,8 +2,14 @@
 Cross-ticker self-attention matrix analysis.
 
 Analyses how the Stage-1 attention structure evolves over time.
-Diagonal mass → intrinsic appeal proxy.
-Off-diagonal mass → extrinsic cross-ticker coupling proxy.
+Diagonal mass  → intrinsic appeal proxy  (ticker attends to itself)
+Off-diagonal   → extrinsic coupling      (ticker attends to peers)
+
+Public API (used by 3_c_eval_attention.py)
+------------------------------------------
+diagonal_vs_offdiagonal(A)  — single (N,N) matrix → (diag_mean, offdiag_mean)
+plot_attention_heatmap      — seaborn heatmap for one week
+plot_attention_evolution    — coupling-ratio time series with event annotations
 """
 
 from __future__ import annotations
@@ -13,6 +19,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 import seaborn as sns
 import torch
 
@@ -20,51 +27,32 @@ from model.twit_wave import TwitWave
 from data.vocab import Vocabulary
 
 
-def extract_attention_matrices(
-    model: TwitWave,
-    features_seq: torch.Tensor,    # (T, N, 5)
-    ticker_ids_seq: torch.Tensor,  # (T, N)
-    device: torch.device,
-) -> list[np.ndarray]:
+# ------------------------------------------------------------------
+# matrix stats
+# ------------------------------------------------------------------
+
+def diagonal_vs_offdiagonal(A: np.ndarray) -> tuple[float, float]:
     """
-    Run Stage-1 encoder on each time step and collect A_t matrices.
+    Compute diagonal mean and off-diagonal mean for a single (N, N) matrix.
 
-    Returns list of T arrays, each (N_t, N_t).
+    Returns
+    -------
+    diag_mean    : mean of diagonal entries   (intrinsic / self-attention)
+    offdiag_mean : mean of off-diagonal entries (extrinsic / cross-ticker coupling)
     """
-    model.eval()
-    A_list = []
-
-    with torch.no_grad():
-        for t in range(features_seq.shape[0]):
-            feat = features_seq[t].unsqueeze(0).to(device)   # (1, N, 5)
-            ids  = ticker_ids_seq[t].unsqueeze(0).to(device)  # (1, N)
-            a_t, A_t = model._encode_step(feat, ids)
-            A_list.append(A_t[0].cpu().numpy())               # (N, N)
-
-    return A_list
+    N = A.shape[0]
+    if N == 0:
+        return 0.0, 0.0
+    diag_sum    = float(np.trace(A))
+    offdiag_sum = float(A.sum()) - diag_sum
+    diag_mean    = diag_sum / N
+    offdiag_mean = offdiag_sum / max(N * N - N, 1)
+    return diag_mean, offdiag_mean
 
 
-def diagonal_vs_offdiagonal(A_list: list[np.ndarray]) -> pd.DataFrame:
-    """
-    Compute per-step diagonal mass and off-diagonal mass.
-    Returns DataFrame with columns: step, diag_mass, offdiag_mass, ratio.
-    """
-    rows = []
-    for t, A in enumerate(A_list):
-        N = A.shape[0]
-        if N == 0:
-            continue
-        diag  = np.trace(A) / N
-        total = A.sum() / (N * N)
-        offdiag = (total * N * N - np.trace(A)) / max(N * N - N, 1)
-        rows.append({
-            "step":      t,
-            "diag_mass": float(diag),
-            "offdiag_mass": float(offdiag),
-            "ratio":     float(diag / max(offdiag, 1e-8)),
-        })
-    return pd.DataFrame(rows)
-
+# ------------------------------------------------------------------
+# plots
+# ------------------------------------------------------------------
 
 def plot_attention_heatmap(
     A: np.ndarray,
@@ -72,11 +60,11 @@ def plot_attention_heatmap(
     title: str = "",
     output_path: str | Path | None = None,
     show: bool = True,
-    top_n: int = 20,   # only show top_n × top_n for readability
+    top_n: int = 20,
 ) -> plt.Figure:
-    """Plot a single attention heatmap."""
-    n = min(len(ticker_labels), top_n)
-    A_sub = A[:n, :n]
+    """Seaborn heatmap for one week's cross-ticker attention matrix."""
+    n      = min(len(ticker_labels), top_n, A.shape[0])
+    A_sub  = A[:n, :n]
     labels = ticker_labels[:n]
 
     fig, ax = plt.subplots(figsize=(9, 8))
@@ -88,6 +76,7 @@ def plot_attention_heatmap(
         ax=ax,
         vmin=0,
         linewidths=0.3,
+        cbar_kws={"label": "Attention weight"},
     )
     ax.set_title(title, fontsize=13)
     ax.set_xlabel("Source ticker")
@@ -103,28 +92,50 @@ def plot_attention_heatmap(
 
 
 def plot_attention_evolution(
-    diag_df: pd.DataFrame,
-    week_dates: list[str] | None = None,
+    coupling_df: pd.DataFrame,
+    known_events: dict[str, str] | None = None,
     output_path: str | Path | None = None,
     show: bool = True,
 ) -> plt.Figure:
-    """Plot diagonal vs off-diagonal mass over time."""
+    """
+    Plot diagonal vs off-diagonal attention mass over time, with optional
+    vertical annotations for known market events.
+
+    Parameters
+    ----------
+    coupling_df   : DataFrame with columns week, diag_mean, offdiag_mean,
+                    coupling_ratio  (produced by 3_c_eval_attention.py)
+    known_events  : {date_str: label} dict — dates get vertical dashed lines
+    """
     fig, axes = plt.subplots(2, 1, figsize=(14, 7), sharex=True)
 
-    x = week_dates if week_dates else diag_df["step"].values
+    weeks = pd.to_datetime(coupling_df["week"])
 
-    axes[0].plot(x, diag_df["diag_mass"], lw=2, color="#2ca02c", label="Diagonal (intrinsic)")
-    axes[0].plot(x, diag_df["offdiag_mass"], lw=2, color="#d62728", label="Off-diagonal (extrinsic)")
+    axes[0].plot(weeks, coupling_df["diag_mean"],    lw=2, color="#2ca02c", label="Diagonal (intrinsic)")
+    axes[0].plot(weeks, coupling_df["offdiag_mean"], lw=2, color="#d62728", label="Off-diagonal (extrinsic)")
     axes[0].set_ylabel("Mean attention mass")
-    axes[0].legend()
+    axes[0].legend(fontsize=9)
     axes[0].grid(alpha=0.2)
 
-    axes[1].plot(x, diag_df["ratio"], lw=2, color="#1f77b4")
+    axes[1].plot(weeks, coupling_df["coupling_ratio"], lw=2, color="#1f77b4")
+    axes[1].axhline(1.0, color="gray", lw=1, linestyle="--", label="ratio = 1")
     axes[1].set_ylabel("Intrinsic / Extrinsic ratio")
-    axes[1].axhline(1.0, color="gray", lw=1, linestyle="--")
     axes[1].grid(alpha=0.2)
 
+    # Annotate known events
+    if known_events:
+        for date_str, label in known_events.items():
+            dt = pd.Timestamp(date_str)
+            for ax in axes:
+                ax.axvline(dt, color="orange", lw=1.2, linestyle="--", alpha=0.8)
+            axes[0].text(dt, axes[0].get_ylim()[1] * 0.97, label,
+                         rotation=90, va="top", ha="right", fontsize=7, color="orange")
+
     axes[0].set_title("Cross-ticker attention structure over time")
+    axes[1].xaxis.set_major_formatter(
+        plt.matplotlib.dates.DateFormatter("%Y-%m")
+    )
+    fig.autofmt_xdate(rotation=30)
     plt.tight_layout()
 
     if output_path:

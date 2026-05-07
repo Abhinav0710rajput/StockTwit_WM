@@ -474,10 +474,17 @@ outputs/rssm_base/
 
 **Resume from checkpoint:**
 ```bash
+# Resume from last completed epoch (e.g. after GPU job dies)
 python scripts/2_b_train_rssm.py \
     --cfg     configs/rssm_base.yaml \
     --out_dir outputs/rssm_base \
-    --resume  outputs/rssm_base/checkpoints/best.pt
+    --resume  latest
+
+# Resume from a specific checkpoint
+python scripts/2_b_train_rssm.py \
+    --cfg     configs/rssm_base.yaml \
+    --out_dir outputs/rssm_base \
+    --resume  outputs/rssm_base/checkpoints/epoch_050.pt
 ```
 
 ### 7.2 Training Baselines
@@ -584,9 +591,8 @@ All evaluation scripts write results to `outputs/eval/{prediction,kl,attention,l
 ```bash
 python scripts/3_a_eval_prediction.py \
     --model_dir     outputs/rssm_base \
-    --data_dir      data/processed \
+    --data_dir      data/processed_week \
     --baselines_dir outputs/baselines \
-    --out_dir       outputs/eval/prediction \
     --horizons      1 4 13 \
     --splits        test1 test2
 ```
@@ -613,8 +619,7 @@ Horizons are 1, 4, 13 weeks (approximately: next week, next month, next quarter)
 ```bash
 python scripts/3_b_eval_kl.py \
     --model_dir  outputs/rssm_base \
-    --data_dir   data/processed \
-    --out_dir    outputs/eval/kl \
+    --data_dir   data/processed_week \
     --splits     val test1 test2 \
     --spike_z    2.0
 ```
@@ -637,8 +642,7 @@ The KL divergence `KL(q(s_t|h_t,e_t) || p(s_t|h_t))` at each week is the model's
 ```bash
 python scripts/3_c_eval_attention.py \
     --model_dir outputs/rssm_base \
-    --data_dir  data/processed \
-    --out_dir   outputs/eval/attention \
+    --data_dir  data/processed_week \
     --top_n     50
 ```
 
@@ -658,8 +662,7 @@ The **coupling ratio** = mean off-diagonal / mean diagonal. When this ratio incr
 ```bash
 python scripts/3_d_eval_latent.py \
     --model_dir  outputs/rssm_base \
-    --data_dir   data/processed \
-    --out_dir    outputs/eval/latent \
+    --data_dir   data/processed_week \
     --n_clusters 5
 ```
 
@@ -687,13 +690,13 @@ A high silhouette score (> 0.5) on era labels would validate that the RSSM's lat
 # Run all predefined experiments
 python scripts/3_e_eval_counterfactual.py \
     --model_dir outputs/rssm_base \
-    --data_dir  data/processed \
-    --out_dir   outputs/eval/counterfactual \
+    --data_dir  data/processed_week \
     --run_all_experiments
 
 # Custom experiment
 python scripts/3_e_eval_counterfactual.py \
     --model_dir    outputs/rssm_base \
+    --data_dir     data/processed_week \
     --target       GME \
     --week         2021-01-22 \
     --delta        3.0 \
@@ -701,6 +704,8 @@ python scripts/3_e_eval_counterfactual.py \
 
 # Include residual correlation diagnostic
 python scripts/3_e_eval_counterfactual.py \
+    --model_dir outputs/rssm_base \
+    --data_dir  data/processed_week \
     --run_all_experiments \
     --run_residual_corr
 ```
@@ -892,12 +897,12 @@ python scripts/2_c_train_baselines.py \
 # Step 3: Full evaluation (on HPC after training)
 MODEL_DIR=outputs/rssm_base sbatch slurm/eval.sh
 
-# Or run individual eval steps:
-python scripts/3_a_eval_prediction.py --ckpt outputs/rssm_base/checkpoints/best.pt ...
-python scripts/3_b_eval_kl.py         --log  outputs/rssm_base/logs/kl_log.json ...
-python scripts/3_c_eval_attention.py  --ckpt outputs/rssm_base/checkpoints/best.pt ...
-python scripts/3_d_eval_latent.py     --ckpt outputs/rssm_base/checkpoints/best.pt ...
-python scripts/3_e_eval_counterfactual.py --ckpt outputs/rssm_base/checkpoints/best.pt --run_all_experiments
+# Or run individual eval steps (all scripts default to best.pt automatically):
+python scripts/3_a_eval_prediction.py --model_dir outputs/rssm_base --data_dir data/processed_week
+python scripts/3_b_eval_kl.py         --model_dir outputs/rssm_base --data_dir data/processed_week
+python scripts/3_c_eval_attention.py  --model_dir outputs/rssm_base --data_dir data/processed_week
+python scripts/3_d_eval_latent.py     --model_dir outputs/rssm_base --data_dir data/processed_week
+python scripts/3_e_eval_counterfactual.py --model_dir outputs/rssm_base --data_dir data/processed_week --run_all_experiments
 ```
 
 **Expected total compute:** ~7-8 GPU-hours on A100 40GB for the base model.
