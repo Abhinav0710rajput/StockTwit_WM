@@ -74,7 +74,7 @@ The architecture adapts the **Dreamer / RSSM** family of world models (Hafner et
 
 ### 3.1 Data Representation: Dynamic Ticker Sets
 
-At each week `t`, the model observes the **top-K tickers by message count** — the set `S_t ⊆ V` where `V` is the full vocabulary of ~1,000 tickers ever seen in the training data.
+At each week `t`, the model observes the **top-K tickers by message count** — the set `S_t ⊆ V` where `V` is the full vocabulary of **1,520 tickers** ever seen in the training data (vocab_idx=0 is reserved for padding).
 
 Each ticker `i ∈ S_t` is represented by a 5-dimensional feature vector:
 
@@ -335,15 +335,18 @@ StockTwit_WM/
 git clone https://github.com/Abhinav0710rajput/StockTwit_WM.git
 cd StockTwit_WM
 
-# Create and activate a conda environment
-conda create -n twit_wave python=3.11 -y
-conda activate twit_wave
+# Create and activate a conda environment (Python 3.11 required)
+conda create -n wm_ml python=3.11 -y
+conda activate wm_ml
 
 # Install PyTorch (adjust CUDA version as needed)
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
 
 # Install all other dependencies
 pip install -r requirements.txt
+
+# IMPORTANT: torch 2.2.x requires NumPy < 2. Pin it explicitly:
+pip install "numpy<2"
 ```
 
 ### Verify the installation
@@ -381,41 +384,51 @@ python 0_b_csv_to_parquet.py   # convert CSV → Parquet for faster IO
 ```bash
 python scripts/2_a_feature_engineering.py \
     --raw_dir  data/raw \
-    --out_dir  data/processed \
-    --top_k    100 \
+    --out_dir  data/processed_week \
+    --top_k    200 \
     --min_weeks 10
 ```
 
 This script:
 1. Groups messages by `(symbol, week)` using DuckDB for fast aggregation
 2. Computes the 5 features per (ticker, week) row
-3. Keeps the **top-100 tickers by message count** per week (the dynamic roster)
+3. Keeps the **top-200 tickers by message count** per week (the dynamic roster stored in the panel; model uses top-100 at runtime)
 4. Builds a `Vocabulary` — stable integer IDs for all tickers that appear ≥10 weeks in training
 5. Splits into temporal train/val/test1/test2 panels
-6. Saves `data/processed/panel_{train,val,test1,test2}.parquet` and `vocab.json`
+6. Saves `data/processed_week/panel_{train,val,test1,test2}.parquet` and `vocab.json`
 
 **Output files:**
 ```
-data/processed/
-├── vocab.json              # {"AAPL": 1, "GME": 2, ...}  (padding_idx=0)
-├── panel_all.parquet       # Full panel (all splits)
-├── panel_train.parquet     # 2008-01 to 2018-12
-├── panel_val.parquet       # 2019-01 to 2019-12
-├── panel_test1.parquet     # 2020-01 to 2020-06  (COVID)
-├── panel_test2.parquet     # 2020-10 to 2021-06  (GME)
+data/processed_week/
+├── vocab.json              # {"AAPL": 1, "GME": 2, ...}  (padding_idx=0)  — 1,520 tickers
+├── panel_all.parquet       # Full panel (all splits, 762 weeks, 151,337 rows)
+├── panel_train.parquet     # 2008-05-26 to 2018-12-31  (554 weeks)
+├── panel_val.parquet       # 2019-01-07 to 2019-12-30  (52 weeks)
+├── panel_test1.parquet     # 2020-01-06 to 2020-06-29  (26 weeks, COVID)
+├── panel_test2.parquet     # 2020-10-05 to 2021-06-28  (39 weeks, GME/meme)
 └── dataset_stats.json      # Metadata: split sizes, vocab size, etc.
 ```
 
 ### 6.3 Temporal Splits
 
-| Split | Period | Purpose | Key Events |
-|---|---|---|---|
-| **Train** | 2008-01 to 2018-12 | Model fitting | Financial crisis recovery, bull market |
-| **Val** | 2019-01 to 2019-12 | Hyperparameter selection, early stopping | Stable market |
-| **Test1** | 2020-01 to 2020-06 | Out-of-sample evaluation | COVID crash (Feb 20), recovery |
-| **Test2** | 2020-10 to 2021-06 | Out-of-sample evaluation | GME squeeze (Jan 22), meme stocks |
+| Split | Period | Weeks | Rows | Purpose | Key Events |
+|---|---|---|---|---|---|
+| **Train** | 2008-05-26 → 2018-12-31 | 554 | 109,737 | Model fitting | Financial crisis, decade-long bull market |
+| **Val** | 2019-01-07 → 2019-12-30 | 52 | 10,400 | Hyperparameter selection, early stopping | Stable low-volatility market |
+| **Test1** | 2020-01-06 → 2020-06-29 | 26 | 5,200 | Out-of-sample: macro shock | COVID crash (Feb 20), recovery |
+| **Test2** | 2020-10-05 → 2021-06-28 | 39 | 7,800 | Out-of-sample: idiosyncratic shock | GME squeeze (Jan 22), meme stocks |
 
-The val set is deliberately placed adjacent to training (no time gap) because the model must learn temporal dynamics without seeing the future. The two test sets are chosen to stress-test regime generalisation: Test1 is a *macro shock* (correlated crash), Test2 is a *micro idiosyncratic* event (retail-driven meme-stock contagion).
+The val set is deliberately placed adjacent to training (7-day gap) to ensure no time leakage. The gap between test1 and test2 is 98 days (Jul–Sep 2020, the COVID recovery period) — this gap was intentional to keep the two stress regimes cleanly separated.
+
+**Ticker novelty across splits:**
+
+| Split pair | Tickers seen in train | New tickers |
+|---|---|---|
+| Train → Val | 80% of val tickers | 20% new |
+| Train → Test1 | 74% of test1 tickers | 26% new |
+| Train → Test2 | 48% of test2 tickers | **52% new** |
+
+Test2's high rate of new tickers (560 unseen tickers, e.g. DOGE.X, new meme stocks) is a strong out-of-distribution test. The vocab embedding must generalise from training ticker representations to tickers it has rarely or never seen. All major counterfactual tickers (GME, AMC, SPY, AAPL, BB, NOK, TSLA) are present in all splits.
 
 ---
 
@@ -423,48 +436,55 @@ The val set is deliberately placed adjacent to training (no time gap) because th
 
 ### 7.1 Training the RSSM
 
+All scripts must be run from the project root with the conda env and PYTHONPATH set:
+
 ```bash
-# Primary base model (A100 40GB)
+conda activate wm_ml
+export PYTHONPATH=/path/to/StockTwit_WM
+```
+
+```bash
+# Primary base model (A100 40GB) — unified YAML config
 python scripts/2_b_train_rssm.py \
-    --model_cfg configs/model/rssm_base.yaml \
-    --train_cfg configs/train/train_base.yaml \
-    --data_dir  data/processed \
-    --out_dir   outputs/rssm_base \
+    --cfg      configs/rssm_base.yaml \
+    --data_dir data/processed_week \
+    --out_dir  outputs/rssm_base \
+    --seed     42 \
     --wandb
 
-# Debug smoke-test (CPU, ~2 minutes)
+# Debug smoke-test (CPU, ~25 seconds, 2 epochs)
 python scripts/2_b_train_rssm.py \
-    --model_cfg configs/model/rssm_small.yaml \
-    --train_cfg configs/train/train_debug.yaml \
-    --data_dir  data/processed \
-    --out_dir   outputs/debug
+    --cfg      configs/debug.yaml \
+    --data_dir data/processed_week \
+    --out_dir  /tmp/tw_smoke_test \
+    --seed     42
 ```
 
 **Output directory structure after training:**
 ```
 outputs/rssm_base/
-├── best_model.pt        # Best checkpoint (lowest val ELBO)
-├── last_model.pt        # Final epoch checkpoint
-├── model_cfg.yaml       # Exact model config used (for reproducibility)
-├── train_cfg.yaml       # Exact train config used
-├── norm_stats.json      # Z-score normalisation parameters (fit on train)
-└── kl_log.json          # Per-epoch KL values (for training dynamics analysis)
+├── config.yaml              # Exact unified config used (for reproducibility)
+├── norm_stats.json          # Z-score normalisation parameters (fit on train)
+├── checkpoints/
+│   ├── best.pt              # Best checkpoint (lowest val ELBO)
+│   └── epoch_NNN.pt         # Saved every 5 epochs
+└── logs/
+    └── kl_log.json          # Per-step KL values (for training dynamics analysis)
 ```
 
 **Resume from checkpoint:**
 ```bash
 python scripts/2_b_train_rssm.py \
-    --model_cfg configs/model/rssm_base.yaml \
-    --train_cfg configs/train/train_base.yaml \
-    --out_dir   outputs/rssm_base \
-    --resume    outputs/rssm_base/last_model.pt
+    --cfg     configs/rssm_base.yaml \
+    --out_dir outputs/rssm_base \
+    --resume  outputs/rssm_base/checkpoints/best.pt
 ```
 
 ### 7.2 Training Baselines
 
 ```bash
 python scripts/2_c_train_baselines.py \
-    --data_dir data/processed \
+    --data_dir data/processed_week \
     --out_dir  outputs/baselines \
     --top_k    100
 
@@ -855,29 +875,29 @@ jupyter notebook 1_a_data_overview.ipynb
 
 # Step 2a: Feature engineering
 python scripts/2_a_feature_engineering.py \
-    --raw_dir data/raw --out_dir data/processed --top_k 100
+    --raw_dir data/raw --out_dir data/processed_week --top_k 200
 
 # Step 2b: Train RSSM (on HPC)
 sbatch slurm/train_a100.sh
-# or locally (debug):
+# or locally (debug smoke test, ~25s):
 python scripts/2_b_train_rssm.py \
-    --model_cfg configs/model/rssm_small.yaml \
-    --train_cfg configs/train/train_debug.yaml \
-    --out_dir outputs/debug
+    --cfg configs/debug.yaml \
+    --data_dir data/processed_week \
+    --out_dir /tmp/tw_smoke_test
 
 # Step 2c: Train baselines
 python scripts/2_c_train_baselines.py \
-    --data_dir data/processed --out_dir outputs/baselines
+    --data_dir data/processed_week --out_dir outputs/baselines
 
 # Step 3: Full evaluation (on HPC after training)
 MODEL_DIR=outputs/rssm_base sbatch slurm/eval.sh
 
 # Or run individual eval steps:
-python scripts/3_a_eval_prediction.py --model_dir outputs/rssm_base ...
-python scripts/3_b_eval_kl.py         --model_dir outputs/rssm_base ...
-python scripts/3_c_eval_attention.py  --model_dir outputs/rssm_base ...
-python scripts/3_d_eval_latent.py     --model_dir outputs/rssm_base ...
-python scripts/3_e_eval_counterfactual.py --model_dir outputs/rssm_base --run_all_experiments
+python scripts/3_a_eval_prediction.py --ckpt outputs/rssm_base/checkpoints/best.pt ...
+python scripts/3_b_eval_kl.py         --log  outputs/rssm_base/logs/kl_log.json ...
+python scripts/3_c_eval_attention.py  --ckpt outputs/rssm_base/checkpoints/best.pt ...
+python scripts/3_d_eval_latent.py     --ckpt outputs/rssm_base/checkpoints/best.pt ...
+python scripts/3_e_eval_counterfactual.py --ckpt outputs/rssm_base/checkpoints/best.pt --run_all_experiments
 ```
 
 **Expected total compute:** ~7-8 GPU-hours on A100 40GB for the base model.

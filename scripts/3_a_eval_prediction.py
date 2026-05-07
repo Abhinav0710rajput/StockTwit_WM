@@ -13,7 +13,7 @@ Outputs:
 Usage:
     python scripts/3_a_eval_prediction.py \
         --model_dir   outputs/rssm_base \
-        --data_dir    data/processed \
+        --data_dir    data/processed_week \
         --baselines_dir outputs/baselines \
         --out_dir     outputs/eval/prediction \
         --horizons    1 4 13
@@ -46,9 +46,10 @@ FEATURE_NAMES = ["log_attention", "bullish_rate", "bearish_rate", "unlabeled_rat
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--model_dir",     type=str, default="outputs/rssm_base")
-    p.add_argument("--data_dir",      type=str, default="data/processed")
+    p.add_argument("--data_dir",      type=str, default="data/processed_week")
     p.add_argument("--baselines_dir", type=str, default="outputs/baselines")
-    p.add_argument("--out_dir",       type=str, default="outputs/eval/prediction")
+    p.add_argument("--out_dir",       type=str, default=None,
+                   help="Output directory. Defaults to <model_dir>/results/prediction")
     p.add_argument("--horizons",      nargs="+", type=int, default=[1, 4, 13],
                    help="Forecast horizons in weeks")
     p.add_argument("--context_len",   type=int, default=52,
@@ -137,7 +138,7 @@ def eval_rssm_on_split(
 
 def main() -> None:
     args = parse_args()
-    out_dir = Path(args.out_dir)
+    out_dir = Path(args.out_dir) if args.out_dir else Path(args.model_dir) / "results" / "prediction"
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "plots").mkdir(exist_ok=True)
 

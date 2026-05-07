@@ -23,6 +23,7 @@ from torch.utils.data import DataLoader
 from configs import load_config
 from data.dataset import TwitWaveDataset, collate_dynamic
 from data.vocab import Vocabulary
+from eval.utils import export_embeddings
 from model.twit_wave import TwitWave, ModelConfig
 from training.trainer import Trainer
 
@@ -156,6 +157,9 @@ def main() -> None:
 
     log.info("Starting training → %s", out_dir)
     trainer.train()
+
+    emb_dir = export_embeddings(model, vocab, out_dir)
+    log.info("Embeddings exported → %s", emb_dir)
 
 
 if __name__ == "__main__":

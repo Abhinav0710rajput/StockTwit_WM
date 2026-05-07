@@ -11,7 +11,7 @@ The KL timeline is the primary qualitative diagnostic for the RSSM:
 Usage:
     python scripts/3_b_eval_kl.py \
         --model_dir outputs/rssm_base \
-        --data_dir  data/processed \
+        --data_dir  data/processed_week \
         --out_dir   outputs/eval/kl
 """
 
@@ -42,8 +42,9 @@ log = logging.getLogger(__name__)
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--model_dir",  type=str, default="outputs/rssm_base")
-    p.add_argument("--data_dir",   type=str, default="data/processed")
-    p.add_argument("--out_dir",    type=str, default="outputs/eval/kl")
+    p.add_argument("--data_dir",   type=str, default="data/processed_week")
+    p.add_argument("--out_dir",    type=str, default=None,
+                   help="Output directory. Defaults to <model_dir>/results/kl")
     p.add_argument("--splits",     nargs="+", default=["val", "test1", "test2"])
     p.add_argument("--context_len", type=int, default=52)
     p.add_argument("--spike_z",     type=float, default=2.0,
@@ -95,7 +96,7 @@ def compute_weekly_kl(
 
 def main() -> None:
     args = parse_args()
-    out_dir = Path(args.out_dir)
+    out_dir = Path(args.out_dir) if args.out_dir else Path(args.model_dir) / "results" / "kl"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -130,7 +131,7 @@ def main() -> None:
         panel = pd.read_parquet(panel_path)
         # Prepend enough training data for context warm-up
         ctx_train = panel_train.tail(args.context_len * 200)   # row budget
-        full_panel = pd.concat([ctx_train, panel]).drop_duplicates("week" if "week" in panel.columns else None)
+        full_panel = pd.concat([ctx_train, panel]).drop_duplicates(subset=["week", "symbol"])
 
         log.info("Computing weekly KL for %s (%d weeks)", split, panel["week"].nunique())
         kl_df = compute_weekly_kl(

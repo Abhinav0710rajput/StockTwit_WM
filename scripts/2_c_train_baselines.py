@@ -7,7 +7,7 @@ on a static (T, K) or (T, K, D) tensor without handling dynamic membership.
 
 Usage:
     python scripts/2_c_train_baselines.py \
-        --data_dir data/processed \
+        --data_dir data/processed_week \
         --out_dir  outputs/baselines \
         --top_k    100
 
@@ -41,7 +41,7 @@ FEATURE_COLS = ["log_attention", "bullish_rate", "bearish_rate", "unlabeled_rate
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
-    p.add_argument("--data_dir", type=str, default="data/processed")
+    p.add_argument("--data_dir", type=str, default="data/processed_week")
     p.add_argument("--out_dir",  type=str, default="outputs/baselines")
     p.add_argument("--top_k",   type=int, default=100)
     p.add_argument("--models",  nargs="+", default=["arima", "var", "lstm"],
@@ -127,21 +127,19 @@ def main() -> None:
         ds_train = TwitWaveDataset(
             panel=panel_train,
             vocab=vocab,
-            seq_len=args.seq_len,
+            chunk_len=args.seq_len,
             window_k=1,
             mode="fixed",
             split="train",
-            normalise=True,
             fixed_roster=roster,
         )
         ds_val = TwitWaveDataset(
             panel=panel_val,
             vocab=vocab,
-            seq_len=args.seq_len,
+            chunk_len=args.seq_len,
             window_k=1,
             mode="fixed",
             split="val",
-            normalise=True,
             norm_stats=ds_train.norm_stats,
             fixed_roster=roster,
         )

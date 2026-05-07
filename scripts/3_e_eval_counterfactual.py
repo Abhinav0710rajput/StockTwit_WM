@@ -12,7 +12,7 @@ Tests the finite-attention hypothesis:
 Usage:
     python scripts/3_e_eval_counterfactual.py \
         --model_dir   outputs/rssm_base \
-        --data_dir    data/processed \
+        --data_dir    data/processed_week \
         --out_dir     outputs/eval/counterfactual \
         --target      GME \
         --eval_tickers GME AMC BB NOK TSLA AAPL MSFT SPY \
@@ -66,8 +66,9 @@ EXPERIMENTS = {
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--model_dir",   type=str, default="outputs/rssm_base")
-    p.add_argument("--data_dir",    type=str, default="data/processed")
-    p.add_argument("--out_dir",     type=str, default="outputs/eval/counterfactual")
+    p.add_argument("--data_dir",    type=str, default="data/processed_week")
+    p.add_argument("--out_dir",     type=str, default=None,
+                   help="Output directory. Defaults to <model_dir>/results/counterfactual")
     p.add_argument("--target",      type=str, default=None,
                    help="Target ticker to perturb (use --experiment for presets)")
     p.add_argument("--eval_tickers", nargs="+", default=None)
@@ -168,7 +169,7 @@ def run_experiment(
 
 def main() -> None:
     args = parse_args()
-    out_dir = Path(args.out_dir)
+    out_dir = Path(args.out_dir) if args.out_dir else Path(args.model_dir) / "results" / "counterfactual"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

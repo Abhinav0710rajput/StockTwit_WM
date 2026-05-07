@@ -8,7 +8,7 @@ saves the processed panel to disk.
 Usage:
     python scripts/2_a_feature_engineering.py \
         --raw_dir data/raw \
-        --out_dir data/processed \
+        --out_dir data/processed_week \
         --top_k 100 \
         --min_weeks 10
 """
@@ -32,7 +32,7 @@ log = logging.getLogger(__name__)
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Feature engineering for Twit Wave")
     p.add_argument("--raw_dir",  type=str, default="data/raw",       help="Directory with raw parquet files")
-    p.add_argument("--out_dir",  type=str, default="data/processed",  help="Output directory")
+    p.add_argument("--out_dir",  type=str, default="data/processed_week",  help="Output directory")
     p.add_argument("--top_k",   type=int, default=100,               help="Top-K tickers per week by msg count")
     p.add_argument("--min_weeks", type=int, default=10,               help="Min weeks a ticker must appear to enter vocab")
     p.add_argument("--parquet_glob", type=str, default="*.parquet",   help="Glob for raw parquet files")

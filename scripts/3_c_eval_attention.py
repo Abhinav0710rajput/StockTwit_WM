@@ -11,7 +11,7 @@ increase, meaning the model detects that tickers are more co-dependent.
 Usage:
     python scripts/3_c_eval_attention.py \
         --model_dir outputs/rssm_base \
-        --data_dir  data/processed \
+        --data_dir  data/processed_week \
         --out_dir   outputs/eval/attention \
         --top_n     50
 """
@@ -49,8 +49,9 @@ KNOWN_EVENTS = {
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--model_dir", type=str, default="outputs/rssm_base")
-    p.add_argument("--data_dir",  type=str, default="data/processed")
-    p.add_argument("--out_dir",   type=str, default="outputs/eval/attention")
+    p.add_argument("--data_dir",  type=str, default="data/processed_week")
+    p.add_argument("--out_dir",   type=str, default=None,
+                   help="Output directory. Defaults to <model_dir>/results/attention")
     p.add_argument("--splits",    nargs="+", default=["test1", "test2"])
     p.add_argument("--top_n",     type=int, default=50,
                    help="Top-N tickers to include in heatmaps")
@@ -62,7 +63,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    out_dir = Path(args.out_dir)
+    out_dir = Path(args.out_dir) if args.out_dir else Path(args.model_dir) / "results" / "attention"
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "heatmaps").mkdir(exist_ok=True)
 

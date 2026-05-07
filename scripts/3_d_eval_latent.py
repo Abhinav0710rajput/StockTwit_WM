@@ -9,7 +9,7 @@ and visualises whether the model learns distinct market eras
 Usage:
     python scripts/3_d_eval_latent.py \
         --model_dir outputs/rssm_base \
-        --data_dir  data/processed \
+        --data_dir  data/processed_week \
         --out_dir   outputs/eval/latent \
         --n_clusters 5
 """
@@ -44,8 +44,9 @@ log = logging.getLogger(__name__)
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--model_dir",  type=str, default="outputs/rssm_base")
-    p.add_argument("--data_dir",   type=str, default="data/processed")
-    p.add_argument("--out_dir",    type=str, default="outputs/eval/latent")
+    p.add_argument("--data_dir",   type=str, default="data/processed_week")
+    p.add_argument("--out_dir",    type=str, default=None,
+                   help="Output directory. Defaults to <model_dir>/results/latent")
     p.add_argument("--splits",     nargs="+", default=["train", "val", "test1", "test2"])
     p.add_argument("--n_clusters", type=int, default=5)
     p.add_argument("--context_len", type=int, default=52)
@@ -65,7 +66,7 @@ def assign_era(week: pd.Timestamp) -> str:
 
 def main() -> None:
     args = parse_args()
-    out_dir = Path(args.out_dir)
+    out_dir = Path(args.out_dir) if args.out_dir else Path(args.model_dir) / "results" / "latent"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
