@@ -17,19 +17,20 @@ model:
 
 # ── Training ──────────────────────────────────────────────────────────────────
 train:
-  seq_len: 52           # BPTT sequence length in weeks (~1 year)
+  seq_len: 64           # BPTT sequence length in weeks (~1 year)
   batch_size: 32
   num_workers: 4
   lr: 3.0e-4
   weight_decay: 1.0e-5
-  grad_clip: 10.0
+  grad_clip: 1.0
   max_epochs: 100
   warmup_epochs: 5      # linear LR warmup
-  patience: 15          # early stopping patience on val ELBO
-  beta_start: 0.1       # KL weight at epoch 0
-  beta_end: 1.0         # KL weight after annealing
-  beta_anneal_epochs: 30
-  free_nats: 3.0        # KL free-bits threshold
+  patience: 35          # early stopping patience on val ELBO
+  beta_start: 0.1       # KL weight during hold phase
+  beta_end: 0.15        # pulled back from 0.25 — val degrades past β≈0.15 (empirical run 1/2)
+  beta_hold_epochs: 15  # hold β at beta_start until reconstruction stabilizes
+  beta_anneal_epochs: 60 # slower ramp: +0.0008/epoch instead of +0.008 — matches run 1 pace
+  free_nats: 0.5        # per-dim KL floor: dims below 0.5 nats are not penalized
   lambda_mse: 1.0       # MSE loss weight relative to BCE
   bce_pos_weight: 10.0  # BCE positive-class upweight (~100 positives out of ~vocab_size)
 

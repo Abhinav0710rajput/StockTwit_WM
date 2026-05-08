@@ -51,24 +51,29 @@ class Trainer:
         self.optimizer = torch.optim.Adam(
             model.parameters(),
             lr=config["lr"],
-            weight_decay=1e-6,
+            weight_decay=config.get("weight_decay", 1e-6),
         )
 
         total_steps = config["max_epochs"] * len(train_loader)
+        warmup_steps = config.get("warmup_epochs", 5) * len(train_loader)
         self.lr_sched = CosineWarmupScheduler(
             self.optimizer,
-            warmup_steps=min(1000, total_steps // 10),
+            warmup_steps=warmup_steps,
             total_steps=total_steps,
         )
         self.beta_sched = BetaScheduler(
             beta_start=config["beta_start"],
             beta_end=config["beta_end"],
             total_steps=int(config["beta_anneal_epochs"] * len(train_loader)),
+            hold_steps=int(config.get("beta_hold_epochs", 0) * len(train_loader)),
         )
 
         self.global_step = 0
         self.best_val_loss = float("inf")
+        self.best_val_recon = float("inf")   # tracks bce+mse only for early stopping
         self.start_epoch = 1
+        self.patience = config.get("patience", 20)
+        self.epochs_no_improve = 0
 
         # wandb
         self.use_wandb = config.get("use_wandb", False)
@@ -98,11 +103,9 @@ class Trainer:
             elapsed = time.time() - t0
             print(
                 f"[epoch {epoch:03d}] "
-                f"train_loss={train_metrics['total']:.4f}  "
-                f"val_loss={val_metrics['total']:.4f}  "
-                f"kl={train_metrics['kl']:.4f}  "
-                f"β={self.beta_sched.value:.3f}  "
-                f"({elapsed:.0f}s)"
+                f"train: total={train_metrics['total']:.4f}  bce={train_metrics['bce']:.4f}  mse={train_metrics['mse']:.4f}  kl={train_metrics['kl']:.4f}  "
+                f"| val: total={val_metrics['total']:.4f}  bce={val_metrics['bce']:.4f}  mse={val_metrics['mse']:.4f}  kl={val_metrics['kl']:.4f}  "
+                f"| β={self.beta_sched.value:.3f}  ({elapsed:.0f}s)"
             )
 
             if self.use_wandb:
@@ -119,6 +122,19 @@ class Trainer:
             if val_metrics["total"] < self.best_val_loss:
                 self.best_val_loss = val_metrics["total"]
                 self.save_checkpoint("best.pt", epoch=epoch)
+
+            # Early stopping on reconstruction only — avoids false triggers during
+            # β-annealing where the ELBO increases even when reconstruction improves.
+            val_recon = val_metrics["bce"] + val_metrics["mse"]
+            if val_recon < self.best_val_recon:
+                self.best_val_recon = val_recon
+                self.epochs_no_improve = 0
+            else:
+                self.epochs_no_improve += 1
+                if self.epochs_no_improve >= self.patience:
+                    print(f"[trainer] early stopping at epoch {epoch} "
+                          f"(no improvement for {self.patience} epochs)")
+                    break
 
         # Save KL log
         with open(self.log_dir / "kl_log.json", "w") as f:
@@ -138,10 +154,13 @@ class Trainer:
             features   = batch["features"].to(self.device)    # (B, T+k, N, 5)
             ticker_ids = batch["ticker_ids"].to(self.device)  # (B, T+k, N)
             presence   = batch["presence"].to(self.device)    # (B, T+k, vocab_size)
+            week_of_year = batch.get("week_of_year")
+            if week_of_year is not None:
+                week_of_year = week_of_year.to(self.device)
 
             beta = self.beta_sched.step()
 
-            out = self.model.forward_train(features, ticker_ids, presence, window_k)
+            out = self.model.forward_train(features, ticker_ids, presence, window_k, week_of_year)
 
             loss_dict = elbo_loss(
                 presence_logits  = out["presence_logits"],
@@ -157,6 +176,7 @@ class Trainer:
                 beta             = beta,
                 free_nats        = cfg["free_nats"],
                 pos_weight       = cfg["pos_weight"],
+                label_smoothing  = cfg.get("label_smoothing", 0.0),
             )
 
             self.optimizer.zero_grad()
@@ -208,8 +228,11 @@ class Trainer:
                 features   = batch["features"].to(self.device)
                 ticker_ids = batch["ticker_ids"].to(self.device)
                 presence   = batch["presence"].to(self.device)
+                week_of_year = batch.get("week_of_year")
+                if week_of_year is not None:
+                    week_of_year = week_of_year.to(self.device)
 
-                out = self.model.forward_train(features, ticker_ids, presence, window_k)
+                out = self.model.forward_train(features, ticker_ids, presence, window_k, week_of_year)
 
                 loss_dict = elbo_loss(
                     presence_logits  = out["presence_logits"],
@@ -225,6 +248,7 @@ class Trainer:
                     beta             = self.beta_sched.value,
                     free_nats        = self.cfg["free_nats"],
                     pos_weight       = self.cfg["pos_weight"],
+                    label_smoothing  = self.cfg.get("label_smoothing", 0.0),
                 )
 
                 for k in running:
@@ -237,31 +261,35 @@ class Trainer:
     def save_checkpoint(self, name: str, epoch: int = 0) -> None:
         path = self.ckpt_dir / name
         torch.save({
-            "model_state":      self.model.state_dict(),
-            "optimizer_state":  self.optimizer.state_dict(),
-            "lr_sched_state":   self.lr_sched.state_dict(),
-            "beta_sched_state": self.beta_sched.state_dict(),
-            "global_step":      self.global_step,
-            "epoch":            epoch,
-            "best_val_loss":    self.best_val_loss,
-            "model_cfg":        self.model.cfg.__dict__,
-            "train_cfg":        self.cfg,
-            "kl_log":           self.kl_log,
+            "model_state":       self.model.state_dict(),
+            "optimizer_state":   self.optimizer.state_dict(),
+            "lr_sched_state":    self.lr_sched.state_dict(),
+            "beta_sched_state":  self.beta_sched.state_dict(),
+            "global_step":       self.global_step,
+            "epoch":             epoch,
+            "best_val_loss":     self.best_val_loss,
+            "best_val_recon":    self.best_val_recon,
+            "epochs_no_improve": self.epochs_no_improve,
+            "model_cfg":         self.model.cfg.__dict__,
+            "train_cfg":         self.cfg,
+            "kl_log":            self.kl_log,
         }, path)
         print(f"[trainer] checkpoint → {path}")
 
     def load_checkpoint(self, path: str) -> None:
-        ckpt = torch.load(path, map_location=self.device)
+        ckpt = torch.load(path, map_location=self.device, weights_only=False)
         self.model.load_state_dict(ckpt["model_state"])
         self.optimizer.load_state_dict(ckpt["optimizer_state"])
         if "lr_sched_state" in ckpt:
             self.lr_sched.load_state_dict(ckpt["lr_sched_state"])
         if "beta_sched_state" in ckpt:
             self.beta_sched.load_state_dict(ckpt["beta_sched_state"])
-        self.global_step   = ckpt.get("global_step", 0)
-        self.best_val_loss = ckpt.get("best_val_loss", float("inf"))
-        self.kl_log        = ckpt.get("kl_log", [])
-        self.start_epoch   = ckpt.get("epoch", 0) + 1
+        self.global_step      = ckpt.get("global_step", 0)
+        self.best_val_loss    = ckpt.get("best_val_loss", float("inf"))
+        self.best_val_recon   = ckpt.get("best_val_recon", float("inf"))
+        self.epochs_no_improve = ckpt.get("epochs_no_improve", 0)
+        self.kl_log           = ckpt.get("kl_log", [])
+        self.start_epoch      = ckpt.get("epoch", 0) + 1
         print(
             f"[trainer] resumed from {path} "
             f"(epoch {ckpt.get('epoch', '?')} → starting epoch {self.start_epoch}, "

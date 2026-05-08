@@ -63,8 +63,9 @@ class TwitWave(nn.Module):
             s_dim=cfg.s_dim,
             d_enc=cfg.d_enc,
             mlp_hidden=cfg.mlp_hidden,
+            dropout=cfg.dropout,
         )
-        self.presence_head  = PresenceHead(cfg.z_dim, cfg.embed_dim)
+        self.presence_head  = PresenceHead(cfg.z_dim, cfg.embed_dim, dropout=cfg.dropout)
         self.feature_head   = FeatureHead(cfg.z_dim, cfg.embed_dim, cfg.mlp_hidden)
 
     # ------------------------------------------------------------------
@@ -108,6 +109,7 @@ class TwitWave(nn.Module):
         ticker_ids: torch.Tensor,  # (B, T+k, top_k)
         presence: torch.Tensor,    # (B, T+k, vocab_size)
         window_k: int | None = None,
+        week_of_year: torch.Tensor | None = None,  # (B, T+k) int, 0–51
     ) -> dict:
         """
         Run the full RSSM loop over the sequence.
@@ -152,10 +154,11 @@ class TwitWave(nn.Module):
             window = self._build_window(a_cache, window_k, device)
             e_t = self.temporal_enc(window)
 
-            # GRU
-            h = self.rssm.gru_step(h, s)
+            # GRU — time embedding goes in here so h_t encodes temporal position
+            woy_t = week_of_year[:, t] if week_of_year is not None else torch.zeros(B, dtype=torch.long, device=device)
+            h = self.rssm.gru_step(h, s, woy_t)
 
-            # Posterior + Prior
+            # Posterior + Prior (prior is pure h_t — WM semantics preserved)
             s, post_mean, post_logvar = self.rssm.posterior(h, e_t)
             _, prior_mean, prior_logvar = self.rssm.prior(h)
 
@@ -209,6 +212,7 @@ class TwitWave(nn.Module):
         h: torch.Tensor,   # (B, h_dim)
         s: torch.Tensor,   # (B, s_dim)
         use_mean: bool = True,
+        week_of_year: int | torch.Tensor = 0,
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         Single prior step for multi-step rollout.
@@ -220,7 +224,10 @@ class TwitWave(nn.Module):
         z_new        : (B, z_dim)
         pres_logits  : (B, vocab_size)
         """
-        h_new = self.rssm.gru_step(h, s)
+        B = h.shape[0]
+        woy = week_of_year if isinstance(week_of_year, torch.Tensor) else \
+              torch.full((B,), week_of_year, dtype=torch.long, device=h.device)
+        h_new = self.rssm.gru_step(h, s, woy)
 
         if use_mean:
             s_new = self.rssm.prior_mean(h_new)
@@ -248,8 +255,9 @@ class TwitWave(nn.Module):
     @torch.no_grad()
     def context_phase(
         self,
-        features: torch.Tensor,    # (T, N, 5)  — single sequence, no batch dim
-        ticker_ids: torch.Tensor,  # (T, N)
+        features: torch.Tensor,       # (T, N, 5)  — single sequence, no batch dim
+        ticker_ids: torch.Tensor,     # (T, N)
+        week_of_year: torch.Tensor,   # (T,) int 0–51
         window_k: int | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         """
@@ -262,7 +270,6 @@ class TwitWave(nn.Module):
         device = features.device
         T = features.shape[0]
 
-        # Add batch dim
         features   = features.unsqueeze(0)    # (1, T, N, 5)
         ticker_ids = ticker_ids.unsqueeze(0)  # (1, T, N)
 
@@ -276,7 +283,8 @@ class TwitWave(nn.Module):
             a_cache.append(a_t)
             window = self._build_window(a_cache, window_k, device)
             e_t = self.temporal_enc(window)
-            h = self.rssm.gru_step(h, s)
+            woy_t = week_of_year[t:t+1].to(device)   # (1,)
+            h = self.rssm.gru_step(h, s, woy_t)
             s, _, _ = self.rssm.posterior(h, e_t)
 
         return h, s   # (1, h_dim), (1, s_dim)

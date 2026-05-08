@@ -36,8 +36,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--cfg",      type=str, required=True, help="Path to unified YAML config")
     p.add_argument("--data_dir", type=str, default="data/processed_week")
     p.add_argument("--out_dir",  type=str, default="outputs/rssm_base")
-    p.add_argument("--resume",   type=str, default=None, help="Checkpoint path to resume from")
-    p.add_argument("--seed",     type=int, default=42)
+    p.add_argument("--resume",         type=str, default=None, help="Checkpoint path to resume from")
+    p.add_argument("--reset_patience", action="store_true", help="Reset early-stopping counter after resuming")
+    p.add_argument("--seed",           type=int, default=42)
     p.add_argument("--wandb",    action="store_true")
     p.add_argument("--wandb_project", type=str, default="twit_wave")
     p.add_argument("--wandb_run",     type=str, default=None)
@@ -81,7 +82,7 @@ def main() -> None:
     log.info("Vocab size: %d", len(vocab))
 
     panel_train = pd.read_parquet(data_dir / "panel_train.parquet")
-    panel_val   = pd.read_parquet(data_dir / "panel_val.parquet")
+    panel_all   = pd.read_parquet(data_dir / "panel_all.parquet")
 
     ds_train = TwitWaveDataset(
         panel=panel_train, vocab=vocab,
@@ -89,7 +90,7 @@ def main() -> None:
         mode="dynamic", split="train",
     )
     ds_val = TwitWaveDataset(
-        panel=panel_val, vocab=vocab,
+        panel=panel_all, vocab=vocab,
         chunk_len=tcfg["seq_len"], window_k=mcfg["window_k"],
         mode="dynamic", split="val",
         norm_stats=ds_train.norm_stats,
@@ -134,14 +135,19 @@ def main() -> None:
     train_cfg = {
         "output_dir":         str(out_dir),
         "lr":                 tcfg["lr"],
+        "weight_decay":       tcfg.get("weight_decay", 1e-6),
         "max_epochs":         tcfg["max_epochs"],
+        "warmup_epochs":      tcfg["warmup_epochs"],
+        "patience":           tcfg["patience"],
         "grad_clip":          tcfg["grad_clip"],
         "beta_start":         tcfg["beta_start"],
         "beta_end":           tcfg["beta_end"],
+        "beta_hold_epochs":   tcfg.get("beta_hold_epochs", 0),
         "beta_anneal_epochs": tcfg["beta_anneal_epochs"],
         "free_nats":          tcfg["free_nats"],
         "lambda_":            tcfg["lambda_mse"],
         "pos_weight":         tcfg["bce_pos_weight"],
+        "label_smoothing":    tcfg.get("label_smoothing", 0.0),
         "use_wandb":          args.wandb,
         "project_name":       args.wandb_project,
     }
@@ -164,6 +170,10 @@ def main() -> None:
                 log.info("--resume latest → %s", resume_path)
         if resume_path:
             trainer.load_checkpoint(resume_path)
+            if args.reset_patience:
+                trainer.epochs_no_improve = 0
+                trainer.best_val_recon = float("inf")
+                log.info("Patience counter reset after resume")
 
     log.info("Starting training → %s", out_dir)
     trainer.train()

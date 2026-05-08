@@ -43,50 +43,73 @@ def kl_divergence(
     return kl.sum(dim=-1)   # (B,)
 
 
-def _make_mlp(in_dim: int, hidden_dim: int, out_dim: int) -> nn.Sequential:
-    return nn.Sequential(
+def _make_mlp(in_dim: int, hidden_dim: int, out_dim: int, dropout: float = 0.0) -> nn.Sequential:
+    layers: list[nn.Module] = [
         nn.Linear(in_dim, hidden_dim),
         nn.SiLU(),
+    ]
+    if dropout > 0.0:
+        layers.append(nn.Dropout(dropout))
+    layers += [
         nn.Linear(hidden_dim, hidden_dim),
         nn.SiLU(),
-        nn.Linear(hidden_dim, out_dim),
-    )
+    ]
+    if dropout > 0.0:
+        layers.append(nn.Dropout(dropout))
+    layers.append(nn.Linear(hidden_dim, out_dim))
+    return nn.Sequential(*layers)
+
+
+def make_time_embedding(week_idx: torch.Tensor, dim: int = 8) -> torch.Tensor:
+    """
+    Sinusoidal embedding of week-of-year (0–51).
+    Encodes seasonality at annual / semi-annual / quarterly / monthly periods.
+    dim must equal 2 × n_periods (default 8 = 4 periods).
+    """
+    periods = torch.tensor([52.0, 26.0, 13.0, 4.0], device=week_idx.device)
+    t = week_idx.unsqueeze(-1).float() / periods   # (..., 4)
+    return torch.cat([t.sin(), t.cos()], dim=-1)   # (..., 8)
 
 
 class RSSM(nn.Module):
+    # Time embedding is fed into the GRU input so h_t encodes temporal position.
+    # The prior p(s_t | h_t) then remains a pure function of recurrent memory —
+    # it can predict seasonal patterns because h_t carries them, not because it
+    # was handed the calendar directly.
+    TIME_DIM = 8
+
     def __init__(
         self,
         h_dim: int,      # GRU hidden size
         s_dim: int,      # stochastic latent size
         d_enc: int,      # encoder output size (input to posterior)
         mlp_hidden: int = 256,
+        dropout: float = 0.0,
     ) -> None:
         super().__init__()
         self.h_dim = h_dim
         self.s_dim = s_dim
 
-        self.gru = nn.GRUCell(input_size=s_dim, hidden_size=h_dim)
+        # GRU input: cat(s_{t-1}, time_emb_t) so h_t encodes temporal position
+        self.gru = nn.GRUCell(input_size=s_dim + self.TIME_DIM, hidden_size=h_dim)
 
         # Posterior: concat(h_t, e_t) → (mean, logvar)
-        self.posterior_net = _make_mlp(h_dim + d_enc, mlp_hidden, 2 * s_dim)
+        self.posterior_net = _make_mlp(h_dim + d_enc, mlp_hidden, 2 * s_dim, dropout=dropout)
 
-        # Prior: h_t → (mean, logvar)
-        self.prior_net = _make_mlp(h_dim, mlp_hidden, 2 * s_dim)
+        # Prior: h_t only — pure world model prediction from recurrent memory
+        self.prior_net = _make_mlp(h_dim, mlp_hidden, 2 * s_dim, dropout=dropout)
 
     # ------------------------------------------------------------------
-    def gru_step(self, h: torch.Tensor, s: torch.Tensor) -> torch.Tensor:
-        """h_{t} = GRU(h_{t-1}, s_{t-1})"""
-        return self.gru(s, h)
+    def gru_step(self, h: torch.Tensor, s: torch.Tensor, week_idx: torch.Tensor) -> torch.Tensor:
+        """h_t = GRU(h_{t-1}, cat(s_{t-1}, time_emb_t))"""
+        time_emb = make_time_embedding(week_idx, dim=self.TIME_DIM)
+        return self.gru(torch.cat([s, time_emb], dim=-1), h)
 
     # ------------------------------------------------------------------
     def posterior(
         self, h: torch.Tensor, e: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        """
-        Compute posterior distribution and sample.
-
-        Returns s_t, mean, logvar.
-        """
+        """Returns s_t, mean, logvar."""
         out = self.posterior_net(torch.cat([h, e], dim=-1))
         mean, logvar = out.chunk(2, dim=-1)
         logvar = logvar.clamp(-10, 2)
@@ -97,11 +120,7 @@ class RSSM(nn.Module):
     def prior(
         self, h: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        """
-        Compute prior distribution and sample.
-
-        Returns ŝ_t, mean, logvar.
-        """
+        """Returns ŝ_t, mean, logvar."""
         out = self.prior_net(h)
         mean, logvar = out.chunk(2, dim=-1)
         logvar = logvar.clamp(-10, 2)

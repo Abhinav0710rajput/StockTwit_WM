@@ -4,31 +4,33 @@ model:
   embed_dim: 128
   d_enc: 512
   h_dim: 1024
-  s_dim: 512            # z_dim = 1536
+  s_dim: 256            # z_dim = 1280; tighter bottleneck reduces BCE memorization
   n_heads: 16
   n_layers: 4
-  window_k: 16
+  window_k: 8
   mlp_hidden: 512
   feature_dim: 5
   top_k: 100
-  dropout: 0.15
+  dropout: 0.15         # applied to posterior/prior MLPs and presence head
 
 train:
-  seq_len: 52
+  seq_len: 64
   batch_size: 16        # reduce due to larger model
   num_workers: 4
   lr: 1.0e-4            # slightly lower lr for larger model
   weight_decay: 1.0e-5
-  grad_clip: 10.0
-  max_epochs: 100
+  grad_clip: 1.0
+  max_epochs: 200
   warmup_epochs: 10
-  patience: 20
+  patience: 60
   beta_start: 0.1
-  beta_end: 1.0
-  beta_anneal_epochs: 40
-  free_nats: 3.0
+  beta_end: 0.15        # pulled back — val degrades past β≈0.15 (same as base observations)
+  beta_hold_epochs: 20
+  beta_anneal_epochs: 60  # slower ramp matches empirically safe pace
+  free_nats: 1.0          # PlaNet/Dreamer convention: floor each dim at 1 nat
   lambda_mse: 1.0
   bce_pos_weight: 10.0
+  label_smoothing: 0.05   # prevents extreme confidence on training co-occurrences
 
 eval:
   horizons: [1, 4, 13]

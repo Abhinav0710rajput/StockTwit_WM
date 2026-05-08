@@ -59,8 +59,8 @@ class TwitWaveDataset(Dataset):
 
         # --- date splits ---
         split_ranges = {
-            "train": ("2008-01-01", "2018-12-31"),
-            "val":   ("2019-01-01", "2019-12-31"),
+            "train": ("2008-01-01", "2016-12-31"),
+            "val":   ("2017-01-01", "2018-12-31"),
             "test1": ("2020-01-01", "2020-06-30"),
             "test2": ("2021-01-01", "2021-03-31"),
         }
@@ -131,7 +131,7 @@ class TwitWaveDataset(Dataset):
     # ------------------------------------------------------------------
     def _get_dynamic(self, weeks: list) -> dict:
         T = len(weeks)
-        feat_list, ids_list, pres_list = [], [], []
+        feat_list, ids_list, pres_list, woy_list = [], [], [], []
 
         for wk in weeks:
             grp = self._week_data.get(wk)
@@ -155,14 +155,18 @@ class TwitWaveDataset(Dataset):
             if n > 0:
                 pres[ids[:n]] = 1.0
 
+            # week-of-year (0-indexed, 0–51) for seasonal prior embedding
+            woy_list.append(wk.isocalendar()[1] - 1)
+
             feat_list.append(feat)
             ids_list.append(ids)
             pres_list.append(pres)
 
         return {
-            "features":   torch.from_numpy(np.stack(feat_list)),   # (T, top_k, 5)
-            "ticker_ids": torch.from_numpy(np.stack(ids_list)),    # (T, top_k)
-            "presence":   torch.from_numpy(np.stack(pres_list)),   # (T, vocab_size)
+            "features":     torch.from_numpy(np.stack(feat_list)),              # (T, top_k, 5)
+            "ticker_ids":   torch.from_numpy(np.stack(ids_list)),               # (T, top_k)
+            "presence":     torch.from_numpy(np.stack(pres_list)),              # (T, vocab_size)
+            "week_of_year": torch.tensor(woy_list, dtype=torch.long),           # (T,)
         }
 
     # ------------------------------------------------------------------
@@ -203,11 +207,14 @@ class TwitWaveDataset(Dataset):
 # ------------------------------------------------------------------
 
 def collate_dynamic(batch: list[dict]) -> dict:
-    return {
+    out = {
         "features":   torch.stack([b["features"]   for b in batch]),
         "ticker_ids": torch.stack([b["ticker_ids"] for b in batch]),
         "presence":   torch.stack([b["presence"]   for b in batch]),
     }
+    if "week_of_year" in batch[0]:
+        out["week_of_year"] = torch.stack([b["week_of_year"] for b in batch])
+    return out
 
 
 def collate_fixed(batch: list[dict]) -> dict:

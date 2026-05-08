@@ -32,9 +32,10 @@ def _feature_mlp(z_dim: int, e_dim: int, hidden: int) -> nn.Sequential:
 
 
 class PresenceHead(nn.Module):
-    def __init__(self, z_dim: int, embed_dim: int) -> None:
+    def __init__(self, z_dim: int, embed_dim: int, dropout: float = 0.0) -> None:
         super().__init__()
         self.proj = nn.Linear(z_dim, embed_dim)
+        self.drop = nn.Dropout(dropout)
 
     def forward(
         self,
@@ -42,7 +43,7 @@ class PresenceHead(nn.Module):
         e_ret: torch.Tensor,  # (vocab_size, E)
     ) -> torch.Tensor:
         """Returns presence logits (B, vocab_size). Apply sigmoid for probabilities."""
-        h = self.proj(z)                    # (B, E)
+        h = self.drop(self.proj(z))         # (B, E)
         return h @ e_ret.T                  # (B, vocab_size)
 
 

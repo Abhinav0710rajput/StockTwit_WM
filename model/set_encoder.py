@@ -34,7 +34,7 @@ class SetEncoder(nn.Module):
             batch_first=True,
             norm_first=True,          # pre-norm for stability
         )
-        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=n_layers)
+        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=n_layers, enable_nested_tensor=False)
         self.norm = nn.LayerNorm(d_enc)
 
         # We need raw attention weights — attach hooks on the last layer
