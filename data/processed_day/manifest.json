@@ -1,0 +1,2329 @@
+{
+  "all": [
+    {
+      "file": "by_month/panel_2008_05.parquet",
+      "rows": 86,
+      "days": 5,
+      "symbols": 68,
+      "size_bytes": 7792
+    },
+    {
+      "file": "by_month/panel_2008_06.parquet",
+      "rows": 720,
+      "days": 30,
+      "symbols": 335,
+      "size_bytes": 11660
+    },
+    {
+      "file": "by_month/panel_2008_07.parquet",
+      "rows": 787,
+      "days": 30,
+      "symbols": 348,
+      "size_bytes": 11888
+    },
+    {
+      "file": "by_month/panel_2008_08.parquet",
+      "rows": 908,
+      "days": 31,
+      "symbols": 424,
+      "size_bytes": 12732
+    },
+    {
+      "file": "by_month/panel_2008_09.parquet",
+      "rows": 1899,
+      "days": 30,
+      "symbols": 640,
+      "size_bytes": 19327
+    },
+    {
+      "file": "by_month/panel_2008_10.parquet",
+      "rows": 3689,
+      "days": 31,
+      "symbols": 1172,
+      "size_bytes": 29479
+    },
+    {
+      "file": "by_month/panel_2008_11.parquet",
+      "rows": 3581,
+      "days": 30,
+      "symbols": 1090,
+      "size_bytes": 30593
+    },
+    {
+      "file": "by_month/panel_2008_12.parquet",
+      "rows": 4368,
+      "days": 31,
+      "symbols": 1306,
+      "size_bytes": 35761
+    },
+    {
+      "file": "by_month/panel_2009_01.parquet",
+      "rows": 4945,
+      "days": 31,
+      "symbols": 1246,
+      "size_bytes": 40537
+    },
+    {
+      "file": "by_month/panel_2009_02.parquet",
+      "rows": 4928,
+      "days": 28,
+      "symbols": 1254,
+      "size_bytes": 43095
+    },
+    {
+      "file": "by_month/panel_2009_03.parquet",
+      "rows": 5588,
+      "days": 31,
+      "symbols": 1089,
+      "size_bytes": 49484
+    },
+    {
+      "file": "by_month/panel_2009_04.parquet",
+      "rows": 5699,
+      "days": 30,
+      "symbols": 1270,
+      "size_bytes": 52746
+    },
+    {
+      "file": "by_month/panel_2009_05.parquet",
+      "rows": 5929,
+      "days": 31,
+      "symbols": 1244,
+      "size_bytes": 53815
+    },
+    {
+      "file": "by_month/panel_2009_06.parquet",
+      "rows": 5914,
+      "days": 30,
+      "symbols": 1267,
+      "size_bytes": 52821
+    },
+    {
+      "file": "by_month/panel_2009_07.parquet",
+      "rows": 5996,
+      "days": 31,
+      "symbols": 1297,
+      "size_bytes": 54316
+    },
+    {
+      "file": "by_month/panel_2009_08.parquet",
+      "rows": 5925,
+      "days": 31,
+      "symbols": 1369,
+      "size_bytes": 54192
+    },
+    {
+      "file": "by_month/panel_2009_09.parquet",
+      "rows": 5828,
+      "days": 30,
+      "symbols": 1351,
+      "size_bytes": 54793
+    },
+    {
+      "file": "by_month/panel_2009_10.parquet",
+      "rows": 5964,
+      "days": 31,
+      "symbols": 1340,
+      "size_bytes": 56460
+    },
+    {
+      "file": "by_month/panel_2009_11.parquet",
+      "rows": 5715,
+      "days": 30,
+      "symbols": 1263,
+      "size_bytes": 54425
+    },
+    {
+      "file": "by_month/panel_2009_12.parquet",
+      "rows": 5946,
+      "days": 31,
+      "symbols": 1323,
+      "size_bytes": 56357
+    },
+    {
+      "file": "by_month/panel_2010_01.parquet",
+      "rows": 6069,
+      "days": 31,
+      "symbols": 1387,
+      "size_bytes": 57615
+    },
+    {
+      "file": "by_month/panel_2010_02.parquet",
+      "rows": 5446,
+      "days": 28,
+      "symbols": 1261,
+      "size_bytes": 52608
+    },
+    {
+      "file": "by_month/panel_2010_03.parquet",
+      "rows": 6035,
+      "days": 31,
+      "symbols": 1326,
+      "size_bytes": 58989
+    },
+    {
+      "file": "by_month/panel_2010_04.parquet",
+      "rows": 5954,
+      "days": 30,
+      "symbols": 1296,
+      "size_bytes": 59213
+    },
+    {
+      "file": "by_month/panel_2010_05.parquet",
+      "rows": 6090,
+      "days": 31,
+      "symbols": 1195,
+      "size_bytes": 57805
+    },
+    {
+      "file": "by_month/panel_2010_06.parquet",
+      "rows": 5985,
+      "days": 30,
+      "symbols": 1200,
+      "size_bytes": 62269
+    },
+    {
+      "file": "by_month/panel_2010_07.parquet",
+      "rows": 6110,
+      "days": 31,
+      "symbols": 1210,
+      "size_bytes": 63340
+    },
+    {
+      "file": "by_month/panel_2010_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1241,
+      "size_bytes": 69946
+    },
+    {
+      "file": "by_month/panel_2010_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1207,
+      "size_bytes": 74276
+    },
+    {
+      "file": "by_month/panel_2010_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1276,
+      "size_bytes": 77424
+    },
+    {
+      "file": "by_month/panel_2010_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1335,
+      "size_bytes": 77846
+    },
+    {
+      "file": "by_month/panel_2010_12.parquet",
+      "rows": 6194,
+      "days": 31,
+      "symbols": 1617,
+      "size_bytes": 87154
+    },
+    {
+      "file": "by_month/panel_2011_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1670,
+      "size_bytes": 93136
+    },
+    {
+      "file": "by_month/panel_2011_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 1614,
+      "size_bytes": 88038
+    },
+    {
+      "file": "by_month/panel_2011_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1562,
+      "size_bytes": 96104
+    },
+    {
+      "file": "by_month/panel_2011_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1588,
+      "size_bytes": 96918
+    },
+    {
+      "file": "by_month/panel_2011_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1591,
+      "size_bytes": 97239
+    },
+    {
+      "file": "by_month/panel_2011_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1482,
+      "size_bytes": 94024
+    },
+    {
+      "file": "by_month/panel_2011_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1588,
+      "size_bytes": 101986
+    },
+    {
+      "file": "by_month/panel_2011_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1561,
+      "size_bytes": 101297
+    },
+    {
+      "file": "by_month/panel_2011_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1251,
+      "size_bytes": 94282
+    },
+    {
+      "file": "by_month/panel_2011_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1493,
+      "size_bytes": 102007
+    },
+    {
+      "file": "by_month/panel_2011_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1495,
+      "size_bytes": 98186
+    },
+    {
+      "file": "by_month/panel_2011_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1469,
+      "size_bytes": 98544
+    },
+    {
+      "file": "by_month/panel_2012_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1498,
+      "size_bytes": 102406
+    },
+    {
+      "file": "by_month/panel_2012_02.parquet",
+      "rows": 5800,
+      "days": 29,
+      "symbols": 1461,
+      "size_bytes": 101206
+    },
+    {
+      "file": "by_month/panel_2012_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1326,
+      "size_bytes": 103152
+    },
+    {
+      "file": "by_month/panel_2012_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1035,
+      "size_bytes": 93452
+    },
+    {
+      "file": "by_month/panel_2012_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1006,
+      "size_bytes": 97125
+    },
+    {
+      "file": "by_month/panel_2012_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 966,
+      "size_bytes": 91999
+    },
+    {
+      "file": "by_month/panel_2012_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1052,
+      "size_bytes": 95071
+    },
+    {
+      "file": "by_month/panel_2012_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1000,
+      "size_bytes": 96073
+    },
+    {
+      "file": "by_month/panel_2012_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1011,
+      "size_bytes": 101913
+    },
+    {
+      "file": "by_month/panel_2012_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 986,
+      "size_bytes": 115478
+    },
+    {
+      "file": "by_month/panel_2012_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1021,
+      "size_bytes": 109408
+    },
+    {
+      "file": "by_month/panel_2012_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1049,
+      "size_bytes": 111693
+    },
+    {
+      "file": "by_month/panel_2013_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 992,
+      "size_bytes": 122634
+    },
+    {
+      "file": "by_month/panel_2013_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 1008,
+      "size_bytes": 110545
+    },
+    {
+      "file": "by_month/panel_2013_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1076,
+      "size_bytes": 117369
+    },
+    {
+      "file": "by_month/panel_2013_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1064,
+      "size_bytes": 118887
+    },
+    {
+      "file": "by_month/panel_2013_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1061,
+      "size_bytes": 124598
+    },
+    {
+      "file": "by_month/panel_2013_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1004,
+      "size_bytes": 116620
+    },
+    {
+      "file": "by_month/panel_2013_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1045,
+      "size_bytes": 123847
+    },
+    {
+      "file": "by_month/panel_2013_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 987,
+      "size_bytes": 128049
+    },
+    {
+      "file": "by_month/panel_2013_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 948,
+      "size_bytes": 125690
+    },
+    {
+      "file": "by_month/panel_2013_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1008,
+      "size_bytes": 136808
+    },
+    {
+      "file": "by_month/panel_2013_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 968,
+      "size_bytes": 132573
+    },
+    {
+      "file": "by_month/panel_2013_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 954,
+      "size_bytes": 132698
+    },
+    {
+      "file": "by_month/panel_2014_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 948,
+      "size_bytes": 146653
+    },
+    {
+      "file": "by_month/panel_2014_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 985,
+      "size_bytes": 132780
+    },
+    {
+      "file": "by_month/panel_2014_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 888,
+      "size_bytes": 149702
+    },
+    {
+      "file": "by_month/panel_2014_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 938,
+      "size_bytes": 140419
+    },
+    {
+      "file": "by_month/panel_2014_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1009,
+      "size_bytes": 140379
+    },
+    {
+      "file": "by_month/panel_2014_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 890,
+      "size_bytes": 136128
+    },
+    {
+      "file": "by_month/panel_2014_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1012,
+      "size_bytes": 145913
+    },
+    {
+      "file": "by_month/panel_2014_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 943,
+      "size_bytes": 145593
+    },
+    {
+      "file": "by_month/panel_2014_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 884,
+      "size_bytes": 149722
+    },
+    {
+      "file": "by_month/panel_2014_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 895,
+      "size_bytes": 159589
+    },
+    {
+      "file": "by_month/panel_2014_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 894,
+      "size_bytes": 145663
+    },
+    {
+      "file": "by_month/panel_2014_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 826,
+      "size_bytes": 147513
+    },
+    {
+      "file": "by_month/panel_2015_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 868,
+      "size_bytes": 154473
+    },
+    {
+      "file": "by_month/panel_2015_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 855,
+      "size_bytes": 146820
+    },
+    {
+      "file": "by_month/panel_2015_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 845,
+      "size_bytes": 162691
+    },
+    {
+      "file": "by_month/panel_2015_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 875,
+      "size_bytes": 156336
+    },
+    {
+      "file": "by_month/panel_2015_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 923,
+      "size_bytes": 160992
+    },
+    {
+      "file": "by_month/panel_2015_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 847,
+      "size_bytes": 157348
+    },
+    {
+      "file": "by_month/panel_2015_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 912,
+      "size_bytes": 165890
+    },
+    {
+      "file": "by_month/panel_2015_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 890,
+      "size_bytes": 164642
+    },
+    {
+      "file": "by_month/panel_2015_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 835,
+      "size_bytes": 155888
+    },
+    {
+      "file": "by_month/panel_2015_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 935,
+      "size_bytes": 164019
+    },
+    {
+      "file": "by_month/panel_2015_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 864,
+      "size_bytes": 160905
+    },
+    {
+      "file": "by_month/panel_2015_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 831,
+      "size_bytes": 165797
+    },
+    {
+      "file": "by_month/panel_2016_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 765,
+      "size_bytes": 163513
+    },
+    {
+      "file": "by_month/panel_2016_02.parquet",
+      "rows": 5800,
+      "days": 29,
+      "symbols": 843,
+      "size_bytes": 159119
+    },
+    {
+      "file": "by_month/panel_2016_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 800,
+      "size_bytes": 169811
+    },
+    {
+      "file": "by_month/panel_2016_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 820,
+      "size_bytes": 171193
+    },
+    {
+      "file": "by_month/panel_2016_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 842,
+      "size_bytes": 171662
+    },
+    {
+      "file": "by_month/panel_2016_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 769,
+      "size_bytes": 173664
+    },
+    {
+      "file": "by_month/panel_2016_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 846,
+      "size_bytes": 176154
+    },
+    {
+      "file": "by_month/panel_2016_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 870,
+      "size_bytes": 186748
+    },
+    {
+      "file": "by_month/panel_2016_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 779,
+      "size_bytes": 179217
+    },
+    {
+      "file": "by_month/panel_2016_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 811,
+      "size_bytes": 184142
+    },
+    {
+      "file": "by_month/panel_2016_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 825,
+      "size_bytes": 182351
+    },
+    {
+      "file": "by_month/panel_2016_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 802,
+      "size_bytes": 188951
+    },
+    {
+      "file": "by_month/panel_2017_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 792,
+      "size_bytes": 188707
+    },
+    {
+      "file": "by_month/panel_2017_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 801,
+      "size_bytes": 180747
+    },
+    {
+      "file": "by_month/panel_2017_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 760,
+      "size_bytes": 201778
+    },
+    {
+      "file": "by_month/panel_2017_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 832,
+      "size_bytes": 187079
+    },
+    {
+      "file": "by_month/panel_2017_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 849,
+      "size_bytes": 199166
+    },
+    {
+      "file": "by_month/panel_2017_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 728,
+      "size_bytes": 192507
+    },
+    {
+      "file": "by_month/panel_2017_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 758,
+      "size_bytes": 193335
+    },
+    {
+      "file": "by_month/panel_2017_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 815,
+      "size_bytes": 200562
+    },
+    {
+      "file": "by_month/panel_2017_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 766,
+      "size_bytes": 189044
+    },
+    {
+      "file": "by_month/panel_2017_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 788,
+      "size_bytes": 205120
+    },
+    {
+      "file": "by_month/panel_2017_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 831,
+      "size_bytes": 205448
+    },
+    {
+      "file": "by_month/panel_2017_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 778,
+      "size_bytes": 205924
+    },
+    {
+      "file": "by_month/panel_2018_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 802,
+      "size_bytes": 214544
+    },
+    {
+      "file": "by_month/panel_2018_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 756,
+      "size_bytes": 195175
+    },
+    {
+      "file": "by_month/panel_2018_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 781,
+      "size_bytes": 211303
+    },
+    {
+      "file": "by_month/panel_2018_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 771,
+      "size_bytes": 201309
+    },
+    {
+      "file": "by_month/panel_2018_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 834,
+      "size_bytes": 207744
+    },
+    {
+      "file": "by_month/panel_2018_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 778,
+      "size_bytes": 201584
+    },
+    {
+      "file": "by_month/panel_2018_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 798,
+      "size_bytes": 201696
+    },
+    {
+      "file": "by_month/panel_2018_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 837,
+      "size_bytes": 208804
+    },
+    {
+      "file": "by_month/panel_2018_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 758,
+      "size_bytes": 201133
+    },
+    {
+      "file": "by_month/panel_2018_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 729,
+      "size_bytes": 222828
+    },
+    {
+      "file": "by_month/panel_2018_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 751,
+      "size_bytes": 201474
+    },
+    {
+      "file": "by_month/panel_2018_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 717,
+      "size_bytes": 192569
+    },
+    {
+      "file": "by_month/panel_2019_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 753,
+      "size_bytes": 198398
+    },
+    {
+      "file": "by_month/panel_2019_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 799,
+      "size_bytes": 191864
+    },
+    {
+      "file": "by_month/panel_2019_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 793,
+      "size_bytes": 212620
+    },
+    {
+      "file": "by_month/panel_2019_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 750,
+      "size_bytes": 204049
+    },
+    {
+      "file": "by_month/panel_2019_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 828,
+      "size_bytes": 207595
+    },
+    {
+      "file": "by_month/panel_2019_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 730,
+      "size_bytes": 196896
+    },
+    {
+      "file": "by_month/panel_2019_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 784,
+      "size_bytes": 198713
+    },
+    {
+      "file": "by_month/panel_2019_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 807,
+      "size_bytes": 200254
+    },
+    {
+      "file": "by_month/panel_2019_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 766,
+      "size_bytes": 191299
+    },
+    {
+      "file": "by_month/panel_2019_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 798,
+      "size_bytes": 200591
+    },
+    {
+      "file": "by_month/panel_2019_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 784,
+      "size_bytes": 198270
+    },
+    {
+      "file": "by_month/panel_2019_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 815,
+      "size_bytes": 200238
+    },
+    {
+      "file": "by_month/panel_2020_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 750,
+      "size_bytes": 214697
+    },
+    {
+      "file": "by_month/panel_2020_02.parquet",
+      "rows": 5800,
+      "days": 29,
+      "symbols": 741,
+      "size_bytes": 206477
+    },
+    {
+      "file": "by_month/panel_2020_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 638,
+      "size_bytes": 237380
+    },
+    {
+      "file": "by_month/panel_2020_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 633,
+      "size_bytes": 234836
+    },
+    {
+      "file": "by_month/panel_2020_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 698,
+      "size_bytes": 244309
+    },
+    {
+      "file": "by_month/panel_2020_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 666,
+      "size_bytes": 246335
+    },
+    {
+      "file": "by_month/panel_2020_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 755,
+      "size_bytes": 248613
+    },
+    {
+      "file": "by_month/panel_2020_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 738,
+      "size_bytes": 244673
+    },
+    {
+      "file": "by_month/panel_2020_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 672,
+      "size_bytes": 229113
+    },
+    {
+      "file": "by_month/panel_2020_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 787,
+      "size_bytes": 236271
+    },
+    {
+      "file": "by_month/panel_2020_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 729,
+      "size_bytes": 234695
+    },
+    {
+      "file": "by_month/panel_2020_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 738,
+      "size_bytes": 257521
+    },
+    {
+      "file": "by_month/panel_2021_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 690,
+      "size_bytes": 268194
+    },
+    {
+      "file": "by_month/panel_2021_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 682,
+      "size_bytes": 263487
+    },
+    {
+      "file": "by_month/panel_2021_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 746,
+      "size_bytes": 285980
+    },
+    {
+      "file": "by_month/panel_2021_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 714,
+      "size_bytes": 259900
+    },
+    {
+      "file": "by_month/panel_2021_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 742,
+      "size_bytes": 261914
+    },
+    {
+      "file": "by_month/panel_2021_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 720,
+      "size_bytes": 268432
+    },
+    {
+      "file": "by_month/panel_2021_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 762,
+      "size_bytes": 274561
+    },
+    {
+      "file": "by_month/panel_2021_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 759,
+      "size_bytes": 278636
+    },
+    {
+      "file": "by_month/panel_2021_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 722,
+      "size_bytes": 272694
+    },
+    {
+      "file": "by_month/panel_2021_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 769,
+      "size_bytes": 280984
+    },
+    {
+      "file": "by_month/panel_2021_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 772,
+      "size_bytes": 284369
+    },
+    {
+      "file": "by_month/panel_2021_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 674,
+      "size_bytes": 276190
+    },
+    {
+      "file": "by_month/panel_2022_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 688,
+      "size_bytes": 259858
+    },
+    {
+      "file": "by_month/panel_2022_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 718,
+      "size_bytes": 236385
+    },
+    {
+      "file": "by_month/panel_2022_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 809,
+      "size_bytes": 258758
+    },
+    {
+      "file": "by_month/panel_2022_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 763,
+      "size_bytes": 242932
+    },
+    {
+      "file": "by_month/panel_2022_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 779,
+      "size_bytes": 242602
+    },
+    {
+      "file": "by_month/panel_2022_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 776,
+      "size_bytes": 231886
+    },
+    {
+      "file": "by_month/panel_2022_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 739,
+      "size_bytes": 235174
+    },
+    {
+      "file": "by_month/panel_2022_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 839,
+      "size_bytes": 255304
+    },
+    {
+      "file": "by_month/panel_2022_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 767,
+      "size_bytes": 229860
+    },
+    {
+      "file": "by_month/panel_2022_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 803,
+      "size_bytes": 230124
+    },
+    {
+      "file": "by_month/panel_2022_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 818,
+      "size_bytes": 230193
+    },
+    {
+      "file": "by_month/panel_2022_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 770,
+      "size_bytes": 223495
+    }
+  ],
+  "train": [
+    {
+      "file": "by_split_month/train/panel_train_2008_05.parquet",
+      "rows": 86,
+      "days": 5,
+      "symbols": 68,
+      "size_bytes": 7792
+    },
+    {
+      "file": "by_split_month/train/panel_train_2008_06.parquet",
+      "rows": 720,
+      "days": 30,
+      "symbols": 335,
+      "size_bytes": 11660
+    },
+    {
+      "file": "by_split_month/train/panel_train_2008_07.parquet",
+      "rows": 787,
+      "days": 30,
+      "symbols": 348,
+      "size_bytes": 11888
+    },
+    {
+      "file": "by_split_month/train/panel_train_2008_08.parquet",
+      "rows": 908,
+      "days": 31,
+      "symbols": 424,
+      "size_bytes": 12732
+    },
+    {
+      "file": "by_split_month/train/panel_train_2008_09.parquet",
+      "rows": 1899,
+      "days": 30,
+      "symbols": 640,
+      "size_bytes": 19327
+    },
+    {
+      "file": "by_split_month/train/panel_train_2008_10.parquet",
+      "rows": 3689,
+      "days": 31,
+      "symbols": 1172,
+      "size_bytes": 29479
+    },
+    {
+      "file": "by_split_month/train/panel_train_2008_11.parquet",
+      "rows": 3581,
+      "days": 30,
+      "symbols": 1090,
+      "size_bytes": 30593
+    },
+    {
+      "file": "by_split_month/train/panel_train_2008_12.parquet",
+      "rows": 4368,
+      "days": 31,
+      "symbols": 1306,
+      "size_bytes": 35761
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_01.parquet",
+      "rows": 4945,
+      "days": 31,
+      "symbols": 1246,
+      "size_bytes": 40537
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_02.parquet",
+      "rows": 4928,
+      "days": 28,
+      "symbols": 1254,
+      "size_bytes": 43095
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_03.parquet",
+      "rows": 5588,
+      "days": 31,
+      "symbols": 1089,
+      "size_bytes": 49484
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_04.parquet",
+      "rows": 5699,
+      "days": 30,
+      "symbols": 1270,
+      "size_bytes": 52746
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_05.parquet",
+      "rows": 5929,
+      "days": 31,
+      "symbols": 1244,
+      "size_bytes": 53815
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_06.parquet",
+      "rows": 5914,
+      "days": 30,
+      "symbols": 1267,
+      "size_bytes": 52821
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_07.parquet",
+      "rows": 5996,
+      "days": 31,
+      "symbols": 1297,
+      "size_bytes": 54316
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_08.parquet",
+      "rows": 5925,
+      "days": 31,
+      "symbols": 1369,
+      "size_bytes": 54192
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_09.parquet",
+      "rows": 5828,
+      "days": 30,
+      "symbols": 1351,
+      "size_bytes": 54793
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_10.parquet",
+      "rows": 5964,
+      "days": 31,
+      "symbols": 1340,
+      "size_bytes": 56460
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_11.parquet",
+      "rows": 5715,
+      "days": 30,
+      "symbols": 1263,
+      "size_bytes": 54425
+    },
+    {
+      "file": "by_split_month/train/panel_train_2009_12.parquet",
+      "rows": 5946,
+      "days": 31,
+      "symbols": 1323,
+      "size_bytes": 56357
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_01.parquet",
+      "rows": 6069,
+      "days": 31,
+      "symbols": 1387,
+      "size_bytes": 57615
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_02.parquet",
+      "rows": 5446,
+      "days": 28,
+      "symbols": 1261,
+      "size_bytes": 52608
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_03.parquet",
+      "rows": 6035,
+      "days": 31,
+      "symbols": 1326,
+      "size_bytes": 58989
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_04.parquet",
+      "rows": 5954,
+      "days": 30,
+      "symbols": 1296,
+      "size_bytes": 59213
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_05.parquet",
+      "rows": 6090,
+      "days": 31,
+      "symbols": 1195,
+      "size_bytes": 57805
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_06.parquet",
+      "rows": 5985,
+      "days": 30,
+      "symbols": 1200,
+      "size_bytes": 62269
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_07.parquet",
+      "rows": 6110,
+      "days": 31,
+      "symbols": 1210,
+      "size_bytes": 63340
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1241,
+      "size_bytes": 69946
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1207,
+      "size_bytes": 74276
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1276,
+      "size_bytes": 77424
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1335,
+      "size_bytes": 77846
+    },
+    {
+      "file": "by_split_month/train/panel_train_2010_12.parquet",
+      "rows": 6194,
+      "days": 31,
+      "symbols": 1617,
+      "size_bytes": 87154
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1670,
+      "size_bytes": 93136
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 1614,
+      "size_bytes": 88038
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1562,
+      "size_bytes": 96104
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1588,
+      "size_bytes": 96918
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1591,
+      "size_bytes": 97239
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1482,
+      "size_bytes": 94024
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1588,
+      "size_bytes": 101986
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1561,
+      "size_bytes": 101297
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1251,
+      "size_bytes": 94282
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1493,
+      "size_bytes": 102007
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1495,
+      "size_bytes": 98186
+    },
+    {
+      "file": "by_split_month/train/panel_train_2011_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1469,
+      "size_bytes": 98544
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1498,
+      "size_bytes": 102406
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_02.parquet",
+      "rows": 5800,
+      "days": 29,
+      "symbols": 1461,
+      "size_bytes": 101206
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1326,
+      "size_bytes": 103152
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1035,
+      "size_bytes": 93452
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1006,
+      "size_bytes": 97125
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 966,
+      "size_bytes": 91999
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1052,
+      "size_bytes": 95071
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1000,
+      "size_bytes": 96073
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1011,
+      "size_bytes": 101913
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 986,
+      "size_bytes": 115478
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1021,
+      "size_bytes": 109408
+    },
+    {
+      "file": "by_split_month/train/panel_train_2012_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1049,
+      "size_bytes": 111693
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 992,
+      "size_bytes": 122634
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 1008,
+      "size_bytes": 110545
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1076,
+      "size_bytes": 117369
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1064,
+      "size_bytes": 118887
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1061,
+      "size_bytes": 124598
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 1004,
+      "size_bytes": 116620
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1045,
+      "size_bytes": 123847
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 987,
+      "size_bytes": 128049
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 948,
+      "size_bytes": 125690
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1008,
+      "size_bytes": 136808
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 968,
+      "size_bytes": 132573
+    },
+    {
+      "file": "by_split_month/train/panel_train_2013_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 954,
+      "size_bytes": 132698
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 948,
+      "size_bytes": 146653
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 985,
+      "size_bytes": 132780
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 888,
+      "size_bytes": 149702
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 938,
+      "size_bytes": 140419
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1009,
+      "size_bytes": 140379
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 890,
+      "size_bytes": 136128
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 1012,
+      "size_bytes": 145913
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 943,
+      "size_bytes": 145593
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 884,
+      "size_bytes": 149722
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 895,
+      "size_bytes": 159589
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 894,
+      "size_bytes": 145663
+    },
+    {
+      "file": "by_split_month/train/panel_train_2014_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 826,
+      "size_bytes": 147513
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 868,
+      "size_bytes": 154473
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 855,
+      "size_bytes": 146820
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 845,
+      "size_bytes": 162691
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 875,
+      "size_bytes": 156336
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 923,
+      "size_bytes": 160992
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 847,
+      "size_bytes": 157348
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 912,
+      "size_bytes": 165890
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 890,
+      "size_bytes": 164642
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 835,
+      "size_bytes": 155888
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 935,
+      "size_bytes": 164019
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 864,
+      "size_bytes": 160905
+    },
+    {
+      "file": "by_split_month/train/panel_train_2015_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 831,
+      "size_bytes": 165797
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 765,
+      "size_bytes": 163513
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_02.parquet",
+      "rows": 5800,
+      "days": 29,
+      "symbols": 843,
+      "size_bytes": 159119
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 800,
+      "size_bytes": 169811
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 820,
+      "size_bytes": 171193
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 842,
+      "size_bytes": 171662
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 769,
+      "size_bytes": 173664
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 846,
+      "size_bytes": 176154
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 870,
+      "size_bytes": 186748
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 779,
+      "size_bytes": 179217
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 811,
+      "size_bytes": 184142
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 825,
+      "size_bytes": 182351
+    },
+    {
+      "file": "by_split_month/train/panel_train_2016_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 802,
+      "size_bytes": 188951
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 792,
+      "size_bytes": 188707
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 801,
+      "size_bytes": 180747
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 760,
+      "size_bytes": 201778
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 832,
+      "size_bytes": 187079
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 849,
+      "size_bytes": 199166
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 728,
+      "size_bytes": 192507
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 758,
+      "size_bytes": 193335
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 815,
+      "size_bytes": 200562
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 766,
+      "size_bytes": 189044
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 788,
+      "size_bytes": 205120
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 831,
+      "size_bytes": 205448
+    },
+    {
+      "file": "by_split_month/train/panel_train_2017_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 778,
+      "size_bytes": 205924
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 802,
+      "size_bytes": 214544
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 756,
+      "size_bytes": 195175
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 781,
+      "size_bytes": 211303
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 771,
+      "size_bytes": 201309
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 834,
+      "size_bytes": 207744
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 778,
+      "size_bytes": 201584
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 798,
+      "size_bytes": 201696
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 837,
+      "size_bytes": 208804
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 758,
+      "size_bytes": 201133
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 729,
+      "size_bytes": 222828
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 751,
+      "size_bytes": 201474
+    },
+    {
+      "file": "by_split_month/train/panel_train_2018_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 717,
+      "size_bytes": 192569
+    }
+  ],
+  "val": [
+    {
+      "file": "by_split_month/val/panel_val_2019_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 753,
+      "size_bytes": 198398
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 799,
+      "size_bytes": 191864
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 793,
+      "size_bytes": 212620
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 750,
+      "size_bytes": 204049
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 828,
+      "size_bytes": 207595
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 730,
+      "size_bytes": 196896
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_07.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 784,
+      "size_bytes": 198713
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_08.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 807,
+      "size_bytes": 200254
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_09.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 766,
+      "size_bytes": 191299
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 798,
+      "size_bytes": 200591
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 784,
+      "size_bytes": 198270
+    },
+    {
+      "file": "by_split_month/val/panel_val_2019_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 815,
+      "size_bytes": 200238
+    }
+  ],
+  "test1": [
+    {
+      "file": "by_split_month/test1/panel_test1_2020_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 750,
+      "size_bytes": 214697
+    },
+    {
+      "file": "by_split_month/test1/panel_test1_2020_02.parquet",
+      "rows": 5800,
+      "days": 29,
+      "symbols": 741,
+      "size_bytes": 206477
+    },
+    {
+      "file": "by_split_month/test1/panel_test1_2020_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 638,
+      "size_bytes": 237380
+    },
+    {
+      "file": "by_split_month/test1/panel_test1_2020_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 633,
+      "size_bytes": 234836
+    },
+    {
+      "file": "by_split_month/test1/panel_test1_2020_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 698,
+      "size_bytes": 244309
+    },
+    {
+      "file": "by_split_month/test1/panel_test1_2020_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 666,
+      "size_bytes": 246335
+    }
+  ],
+  "test2": [
+    {
+      "file": "by_split_month/test2/panel_test2_2020_10.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 787,
+      "size_bytes": 236271
+    },
+    {
+      "file": "by_split_month/test2/panel_test2_2020_11.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 729,
+      "size_bytes": 234695
+    },
+    {
+      "file": "by_split_month/test2/panel_test2_2020_12.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 738,
+      "size_bytes": 257521
+    },
+    {
+      "file": "by_split_month/test2/panel_test2_2021_01.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 690,
+      "size_bytes": 268194
+    },
+    {
+      "file": "by_split_month/test2/panel_test2_2021_02.parquet",
+      "rows": 5600,
+      "days": 28,
+      "symbols": 682,
+      "size_bytes": 263487
+    },
+    {
+      "file": "by_split_month/test2/panel_test2_2021_03.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 746,
+      "size_bytes": 285980
+    },
+    {
+      "file": "by_split_month/test2/panel_test2_2021_04.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 714,
+      "size_bytes": 259900
+    },
+    {
+      "file": "by_split_month/test2/panel_test2_2021_05.parquet",
+      "rows": 6200,
+      "days": 31,
+      "symbols": 742,
+      "size_bytes": 261914
+    },
+    {
+      "file": "by_split_month/test2/panel_test2_2021_06.parquet",
+      "rows": 6000,
+      "days": 30,
+      "symbols": 720,
+      "size_bytes": 268432
+    }
+  ]
+}

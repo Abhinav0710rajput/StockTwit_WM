@@ -1,0 +1,31 @@
+{
+  "aggregation": "day",
+  "start_year": 2008,
+  "end_year": 2022,
+  "top_k": 200,
+  "min_days": 30,
+  "vocab_size_excluding_pad": 2586,
+  "vocab_size_including_pad": 2587,
+  "n_rows": 1033298,
+  "n_days": 5331,
+  "n_symbols": 10216,
+  "feature_cols": [
+    "log_attention",
+    "bullish_rate",
+    "bearish_rate",
+    "unlabeled_rate",
+    "attn_growth"
+  ],
+  "n_train_rows": 741098,
+  "train_days": 3870,
+  "train_symbols": 7819,
+  "n_val_rows": 73000,
+  "val_days": 365,
+  "val_symbols": 2213,
+  "n_test1_rows": 36400,
+  "test1_days": 182,
+  "test1_symbols": 1554,
+  "n_test2_rows": 54600,
+  "test2_days": 273,
+  "test2_symbols": 2185
+}
