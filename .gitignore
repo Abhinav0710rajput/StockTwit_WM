@@ -14,19 +14,11 @@ build/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Model checkpoints & outputs (3.5 GB — use external storage or DVC)
-outputs/*/checkpoints/
-outputs/*/metrics.csv
-outputs/*/train_log.csv
-# Keep: outputs/*/config.yaml, outputs/*/norm_stats.json (small, reproducibility)
-
-# Data files (regenerate via 0_b_csv_to_parquet.py)
-data/processed_week/*.parquet
-data/processed_week/vocab.json
-data/processed_week/dataset_stats.json
+# Model outputs (share via HuggingFace)
+outputs/
 
 # SLURM logs
-logs/
+/logs/
 
 # Local Claude Code settings
 .claude/settings.local.json

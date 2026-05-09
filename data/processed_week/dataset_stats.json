@@ -1,0 +1,20 @@
+{
+  "top_k": 200,
+  "min_weeks": 10,
+  "vocab_size": 1520,
+  "n_train_rows": 109737,
+  "n_val_rows": 10400,
+  "n_test1_rows": 5200,
+  "n_test2_rows": 7800,
+  "train_weeks": 554,
+  "val_weeks": 52,
+  "test1_weeks": 26,
+  "test2_weeks": 39,
+  "feature_cols": [
+    "log_attention",
+    "bullish_rate",
+    "bearish_rate",
+    "unlabeled_rate",
+    "attn_growth"
+  ]
+}
