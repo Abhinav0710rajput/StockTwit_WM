@@ -60,12 +60,14 @@ class RSSM(nn.Module):
         s_dim: int,      # stochastic latent size
         d_enc: int,      # encoder output size (input to posterior)
         mlp_hidden: int = 256,
+        gru_input_extra_dim: int = 0,
     ) -> None:
         super().__init__()
         self.h_dim = h_dim
         self.s_dim = s_dim
+        self.gru_input_extra_dim = gru_input_extra_dim
 
-        self.gru = nn.GRUCell(input_size=s_dim, hidden_size=h_dim)
+        self.gru = nn.GRUCell(input_size=s_dim + gru_input_extra_dim, hidden_size=h_dim)
 
         # Posterior: concat(h_t, e_t) → (mean, logvar)
         self.posterior_net = _make_mlp(h_dim + d_enc, mlp_hidden, 2 * s_dim)
@@ -76,6 +78,14 @@ class RSSM(nn.Module):
     # ------------------------------------------------------------------
     def gru_step(self, h: torch.Tensor, s: torch.Tensor) -> torch.Tensor:
         """h_{t} = GRU(h_{t-1}, s_{t-1})"""
+        if self.gru_input_extra_dim:
+            extra = torch.zeros(
+                s.shape[0],
+                self.gru_input_extra_dim,
+                dtype=s.dtype,
+                device=s.device,
+            )
+            s = torch.cat([s, extra], dim=-1)
         return self.gru(s, h)
 
     # ------------------------------------------------------------------

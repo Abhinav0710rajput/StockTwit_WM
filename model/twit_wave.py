@@ -34,6 +34,7 @@ class ModelConfig:
     feature_dim: int = 5
     top_k: int = 100
     dropout: float = 0.1
+    gru_input_extra_dim: int = 0
 
     @property
     def z_dim(self) -> int:
@@ -63,6 +64,7 @@ class TwitWave(nn.Module):
             s_dim=cfg.s_dim,
             d_enc=cfg.d_enc,
             mlp_hidden=cfg.mlp_hidden,
+            gru_input_extra_dim=cfg.gru_input_extra_dim,
         )
         self.presence_head  = PresenceHead(cfg.z_dim, cfg.embed_dim)
         self.feature_head   = FeatureHead(cfg.z_dim, cfg.embed_dim, cfg.mlp_hidden)

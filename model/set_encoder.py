@@ -51,6 +51,41 @@ class SetEncoder(nn.Module):
 
         last_layer.register_forward_hook(hook)
 
+    def _forward_last_layer_with_weights(
+        self,
+        layer: nn.TransformerEncoderLayer,
+        x: torch.Tensor,
+        key_padding_mask: torch.Tensor | None,
+    ) -> torch.Tensor:
+        if layer.norm_first:
+            attn_in = layer.norm1(x)
+            attn_out, attn_weights = layer.self_attn(
+                attn_in,
+                attn_in,
+                attn_in,
+                key_padding_mask=key_padding_mask,
+                need_weights=True,
+                average_attn_weights=True,
+            )
+            self._attn_weights = attn_weights.detach()
+            x = x + layer.dropout1(attn_out)
+            ff = layer.linear2(layer.dropout(layer.activation(layer.linear1(layer.norm2(x)))))
+            x = x + layer.dropout2(ff)
+        else:
+            attn_out, attn_weights = layer.self_attn(
+                x,
+                x,
+                x,
+                key_padding_mask=key_padding_mask,
+                need_weights=True,
+                average_attn_weights=True,
+            )
+            self._attn_weights = attn_weights.detach()
+            x = layer.norm1(x + layer.dropout1(attn_out))
+            ff = layer.linear2(layer.dropout(layer.activation(layer.linear1(x))))
+            x = layer.norm2(x + layer.dropout2(ff))
+        return x
+
     def forward(
         self,
         x: torch.Tensor,              # (B, N, D+E)
@@ -64,13 +99,13 @@ class SetEncoder(nn.Module):
         """
         B, N, _ = x.shape
 
-        # Force last TransformerEncoderLayer to return attention weights
-        last = self.transformer.layers[-1]
-        last.self_attn.need_weights = True
-        last.self_attn.average_attn_weights = True
-
         h = self.input_proj(x)         # (B, N, d_enc)
-        h = self.transformer(h, src_key_padding_mask=key_padding_mask)
+        self._attn_weights = None
+
+        layers = self.transformer.layers
+        for layer in layers[:-1]:
+            h = layer(h, src_key_padding_mask=key_padding_mask)
+        h = self._forward_last_layer_with_weights(layers[-1], h, key_padding_mask)
         h = self.norm(h)               # (B, N, d_enc)
 
         # Mean pool over non-padded positions
