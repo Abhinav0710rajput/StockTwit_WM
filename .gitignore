@@ -2,3 +2,4 @@ __pycache__/
 external_models/
 *.pt
 data/processed_week/ticker_network_fact/
+.DS_Store
