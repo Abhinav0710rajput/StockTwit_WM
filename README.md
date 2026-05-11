@@ -1,4 +1,4 @@
-# Twit Wave: A World Model for Collective Attention Dynamics in Financial Social Media (StockTwit)
+# Twit Wave: A World Model for Collective Attention Dynamics in Financial Social Media (StockTwits)
 
 **Xingji "Jax" Li** · **Narayani Sai Pemmaraju** · **Abhinav Rajput**  
 NYU Center for Data Science
