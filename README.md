@@ -3,6 +3,11 @@
 **Abhinav Rajput** · NYU Stern School of Business  
 *Working paper — targeting Management Science*
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch 2.3+](https://img.shields.io/badge/PyTorch-2.3%2B-ee4c2c.svg)](https://pytorch.org/)
+[![Hugging Face](https://img.shields.io/badge/🤗%20Model-twitwave--rssm--large-ffd21e.svg)](https://huggingface.co/abhi0710/twitwave-rssm-large)
+
 ---
 
 ## Table of Contents
