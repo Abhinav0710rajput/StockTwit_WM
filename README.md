@@ -50,16 +50,16 @@ NYU Center for Data Science
 
 ## 1. Project Overview
 
-**Twit Wave** is a *world model* for the collective attention dynamics of the StockTwits financial social network (2008–2022). The central hypothesis is that retail investor attention — measured by message volume and sentiment across hundreds of ticker symbols — is not an i.i.d. noise process but a low-dimensional latent regime that evolves over time.
+**Twit Wave** is a *world model* for the collective attention dynamics of the StockTwits financial social network (2008–2022). The central hypothesis is that retail investor attention  -  measured by message volume and sentiment across hundreds of ticker symbols  -  is not an i.i.d. noise process but a low-dimensional latent regime that evolves over time.
 
 The model learns a **latent representation** `z_t` of the attention ecosystem at each week `t`, enabling:
 
 - **Forecasting**: multi-step-ahead prediction of which tickers will trend and what their sentiment profile will be.
 - **Regime detection**: the KL-divergence between the posterior and prior `KL(q||p)` spikes at genuine market regime transitions (COVID crash Feb 2020, GME squeeze Jan 2021) without ever seeing price data.
-- **Counterfactual reasoning**: perturbing `z_t` in the direction of a specific ticker's attention reveals crowd-out effects on unrelated tickers and contagion effects among narratively related ones — an information-theoretic view of the *finite attention* hypothesis.
+- **Counterfactual reasoning**: perturbing `z_t` in the direction of a specific ticker's attention reveals crowd-out effects on unrelated tickers and contagion effects among narratively related ones  -  an information-theoretic view of the *finite attention* hypothesis.
 - **Cross-ticker coupling**: the set encoder's attention matrix `A_t` measures intrinsic (self-attention) vs. extrinsic (cross-ticker) coupling, directly quantifying whether market co-movements are driven by genuine co-dependence or aggregate regime shifts.
 
-The architecture adapts the **Dreamer / RSSM** family of world models (Hafner et al., 2019) to the domain of *variable-membership sets* — the key novelty over standard time-series world models.
+The architecture adapts the **Dreamer / RSSM** family of world models (Hafner et al., 2019) to the domain of *variable-membership sets*  -  the key novelty over standard time-series world models.
 
 ---
 
@@ -79,7 +79,7 @@ The architecture adapts the **Dreamer / RSSM** family of world models (Hafner et
 
 ### 3.1 Data Representation: Dynamic Ticker Sets
 
-At each week `t`, the model observes the **top-K tickers by message count** — the set `S_t ⊆ V` where `V` is the full vocabulary of ~1,000 tickers ever seen in the training data.
+At each week `t`, the model observes the **top-K tickers by message count**  -  the set `S_t ⊆ V` where `V` is the full vocabulary of ~1,000 tickers ever seen in the training data.
 
 Each ticker `i ∈ S_t` is represented by a 5-dimensional feature vector:
 
@@ -93,11 +93,11 @@ Each ticker `i ∈ S_t` is represented by a 5-dimensional feature vector:
 
 The **observation at time `t`** is thus an *unordered set* of (ticker_id, feature_vector) pairs: `X_t = {(i, f_i_t) : i ∈ S_t}`.
 
-**Why dynamic sets matter**: The identity of the top-100 tickers changes week-to-week. An LSTM operating on a fixed `(T, K*D)` tensor would need to zero-impute absent tickers and assign a fixed "slot" to each — destroying the sparsity structure and making the model's hidden state polluted by zeros. TwitWave's set encoder is entirely permutation-equivariant and handles absence natively.
+**Why dynamic sets matter**: The identity of the top-100 tickers changes week-to-week. An LSTM operating on a fixed `(T, K*D)` tensor would need to zero-impute absent tickers and assign a fixed "slot" to each  -  destroying the sparsity structure and making the model's hidden state polluted by zeros. TwitWave's set encoder is entirely permutation-equivariant and handles absence natively.
 
 ### 3.2 Two-Stage Set Encoder
 
-**Stage 1 — Cross-ticker attention within a step** (`model/set_encoder.py`)
+**Stage 1  -  Cross-ticker attention within a step** (`model/set_encoder.py`)
 
 For a single time step with `N_t` active tickers:
 
@@ -112,12 +112,12 @@ Output: a_t ∈ ℝ^{d_enc}   (step-level summary)
 
 `A_t` is the interpretability artefact: diagonal entries capture self-attention (intrinsic dynamics), off-diagonal entries capture cross-ticker coupling (extrinsic / ecosystem dynamics).
 
-**Stage 2 — Temporal attention over a rolling window** (`model/temporal_encoder.py`)
+**Stage 2  -  Temporal attention over a rolling window** (`model/temporal_encoder.py`)
 
 The last `k` step summaries `(a_{t-k+1}, …, a_t)` are fed to a second transformer with sinusoidal positional encodings:
 
 ```
-Input:  (k, d_enc)   — k step summaries
+Input:  (k, d_enc)    -  k step summaries
    ↓ Sinusoidal positional encoding
    ↓ Transformer encoder (n_layers, n_heads)
 Output: e_t ∈ ℝ^{d_enc}   (context embedding for RSSM)
@@ -129,8 +129,8 @@ Output: e_t ∈ ℝ^{d_enc}   (context embedding for RSSM)
 
 The RSSM (`model/rssm.py`) maintains two state components:
 
-- `h_t ∈ ℝ^{h_dim}` — the **deterministic state** (GRU hidden state)
-- `s_t ∈ ℝ^{s_dim}` — the **stochastic latent state** (sampled from a Gaussian)
+- `h_t ∈ ℝ^{h_dim}`  -  the **deterministic state** (GRU hidden state)
+- `s_t ∈ ℝ^{s_dim}`  -  the **stochastic latent state** (sampled from a Gaussian)
 - `z_t = [h_t; s_t] ∈ ℝ^{z_dim}` where `z_dim = h_dim + s_dim`
 
 **Prior** (transition model, no observations):
@@ -185,9 +185,9 @@ bear = 1 - bull   (exact constraint, not a separate MLP)
 
 **Why two separate embeddings?**
 
-The retrieval head performs inner-product lookup: `z_t · e_ret_i`. This geometry rewards embedding directions that are aligned with or orthogonal to `z_t` — a dot-product manifold.
+The retrieval head performs inner-product lookup: `z_t · e_ret_i`. This geometry rewards embedding directions that are aligned with or orthogonal to `z_t`  -  a dot-product manifold.
 
-The feature head feeds `[z_t; e_dec_i]` to an MLP: a Euclidean composition. These two geometries are incompatible in a single embedding space — a ticker that is "far" in retrieval geometry might need to be "close" in feature geometry. Two embedding tables cleanly separate these concerns.
+The feature head feeds `[z_t; e_dec_i]` to an MLP: a Euclidean composition. These two geometries are incompatible in a single embedding space  -  a ticker that is "far" in retrieval geometry might need to be "close" in feature geometry. Two embedding tables cleanly separate these concerns.
 
 **Why separate MLPs per feature?**
 
@@ -209,11 +209,11 @@ where:
   λ     = 1.0 (can be tuned to balance BCE and MSE scales)
 ```
 
-**β-annealing**: Starting with a small KL weight lets the model first learn a useful representation before the prior becomes constraining — a standard technique from β-VAE and the RSSM literature.
+**β-annealing**: Starting with a small KL weight lets the model first learn a useful representation before the prior becomes constraining  -  a standard technique from β-VAE and the RSSM literature.
 
 **Free nats**: The KL is only penalised when it exceeds 3 nats. This prevents the model from collapsing `q` onto `p` before the decoder has learned enough to make use of the latent code.
 
-**MSE only on active tickers**: Zero-imputed entries in the fixed-roster representation are artefacts of the data format, not real observations. Computing MSE on them would train the model to predict zeros for absent tickers — exactly the wrong inductive bias. The dynamic-set representation makes this explicit: we only decode features for tickers that are actually in `S_t`.
+**MSE only on active tickers**: Zero-imputed entries in the fixed-roster representation are artefacts of the data format, not real observations. Computing MSE on them would train the model to predict zeros for absent tickers  -  exactly the wrong inductive bias. The dynamic-set representation makes this explicit: we only decode features for tickers that are actually in `S_t`.
 
 ### 3.6 Inference Strategy
 
@@ -280,7 +280,7 @@ StockTwit_WM/
 │   └── residual_correlation.py   # BCE residual cross-ticker correlation diagnostic
 │
 ├── baselines/
-│   ├── arima.py                  # Per-ticker ARIMA(p,d,q) — floor baseline
+│   ├── arima.py                  # Per-ticker ARIMA(p,d,q)  -  floor baseline
 │   ├── var.py                    # Reduced-rank VAR with SVD truncation
 │   └── lstm.py                   # Shared LSTM on zero-imputed fixed-roster data
 │
@@ -395,7 +395,7 @@ This script:
 1. Groups messages by `(symbol, week)` using DuckDB for fast aggregation
 2. Computes the 5 features per (ticker, week) row
 3. Keeps the **top-100 tickers by message count** per week (the dynamic roster)
-4. Builds a `Vocabulary` — stable integer IDs for all tickers that appear ≥10 weeks in training
+4. Builds a `Vocabulary`  -  stable integer IDs for all tickers that appear ≥10 weeks in training
 5. Splits into temporal train/val/test1/test2 panels
 6. Saves `data/processed/panel_{train,val,test1,test2}.parquet` and `vocab.json`
 
@@ -590,7 +590,7 @@ python scripts/3_a_eval_prediction.py \
 Horizons are 1, 4, 13 weeks (approximately: next week, next month, next quarter).
 
 **Outputs:**
-- `metrics_test1.json` / `metrics_test2.json` — per-model, per-horizon scalar metrics
+- `metrics_test1.json` / `metrics_test2.json`  -  per-model, per-horizon scalar metrics
 - Side-by-side comparison of TwitWave vs ARIMA, VAR, LSTM
 
 ### 8.2 KL Regime Analysis (3b)
@@ -613,9 +613,9 @@ The KL divergence `KL(q(s_t|h_t,e_t) || p(s_t|h_t))` at each week is the model's
 - KL elevated throughout the COVID/GME test splits vs the stable val split
 
 **Outputs:**
-- `kl_all_splits.csv` — weekly KL values for all splits
-- `kl_timeline.{png,pdf}` — time series with annotated market events
-- `spike_stats_{split}.json` — spike count, max KL, Z-threshold percentiles
+- `kl_all_splits.csv`  -  weekly KL values for all splits
+- `kl_timeline.{png,pdf}`  -  time series with annotated market events
+- `spike_stats_{split}.json`  -  spike count, max KL, Z-threshold percentiles
 
 ### 8.3 Cross-Ticker Attention (3c)
 
@@ -632,11 +632,11 @@ The cross-ticker attention matrix `A_t ∈ ℝ^{K×K}` is extracted from the las
 - **Diagonal entries** `A_t[i,i]`: how much ticker `i`'s encoding is driven by its own features (intrinsic dynamics)
 - **Off-diagonal entries** `A_t[i,j]`: how much ticker `i` attends to ticker `j` (extrinsic coupling)
 
-The **coupling ratio** = mean off-diagonal / mean diagonal. When this ratio increases, the model detects that tickers are becoming more co-dependent — expected during systemic events.
+The **coupling ratio** = mean off-diagonal / mean diagonal. When this ratio increases, the model detects that tickers are becoming more co-dependent  -  expected during systemic events.
 
 **Outputs:**
-- `coupling_{split}.{csv,png,pdf}` — coupling ratio time series with event annotations
-- `heatmaps/attn_{split}_{week}.png` — attention heatmaps at selected event weeks
+- `coupling_{split}.{csv,png,pdf}`  -  coupling ratio time series with event annotations
+- `heatmaps/attn_{split}_{week}.png`  -  attention heatmaps at selected event weeks
 
 ### 8.4 Latent Space Clustering (3d)
 
@@ -662,9 +662,9 @@ For each week `t`, extract `z_t = [h_t; s_t]` (the RSSM latent state), reduce to
 A high silhouette score (> 0.5) on era labels would validate that the RSSM's latent space learns meaningful market regime structure.
 
 **Outputs:**
-- `latent_states.csv` — week, era, t-SNE coords, UMAP coords, cluster labels
+- `latent_states.csv`  -  week, era, t-SNE coords, UMAP coords, cluster labels
 - `tsne_by_era.png`, `tsne_by_cluster.png`, `umap_by_era.png`
-- `era_silhouette.json` — clustering quality metrics
+- `era_silhouette.json`  -  clustering quality metrics
 
 ### 8.5 Counterfactual Probing (3e)
 
@@ -720,7 +720,7 @@ Three baselines are included, forming an ablation ladder from simplest to most e
 **File:** `baselines/arima.py`  
 **Model:** `PerTickerARIMA(order=(2,0,1))`
 
-Fits independent ARIMA models for each ticker. No cross-ticker dynamics, no latent regime. Serves as the absolute floor — any model that cannot beat ARIMA per-ticker is failing to capture even univariate temporal structure.
+Fits independent ARIMA models for each ticker. No cross-ticker dynamics, no latent regime. Serves as the absolute floor  -  any model that cannot beat ARIMA per-ticker is failing to capture even univariate temporal structure.
 
 ```python
 arima = PerTickerARIMA(order=(2, 0, 1))
@@ -733,7 +733,7 @@ preds = arima.forecast(steps=4)
 **File:** `baselines/var.py`  
 **Model:** `ReducedRankVAR(maxlags=4, rank=10)`
 
-Fits a Vector Autoregression on the `(T, K)` log_attention matrix, then truncates the coefficient matrices to rank `r` via SVD. Captures *linear* cross-ticker coupling but assumes static, stationary dynamics — exactly what the RSSM is designed to go beyond.
+Fits a Vector Autoregression on the `(T, K)` log_attention matrix, then truncates the coefficient matrices to rank `r` via SVD. Captures *linear* cross-ticker coupling but assumes static, stationary dynamics  -  exactly what the RSSM is designed to go beyond.
 
 The SVD truncation serves two purposes: (1) regularisation for high-dimensional VAR, (2) forcing the coefficient matrices to lie on a low-rank manifold, which is theoretically motivated by the factor structure of financial markets.
 
@@ -748,7 +748,7 @@ forecast = var.forecast(last_obs, steps=4)  # (4, K)
 **File:** `baselines/lstm.py`  
 **Model:** `SharedLSTM(n_tickers=K, feature_dim=5, hidden_dim=512, n_layers=2)`
 
-A single LSTM processes the concatenated `(K*D)` feature vector at each step. The hidden state provides implicit cross-ticker coupling (unlike ARIMA), but there is no explicit latent regime separation — the LSTM cannot disentangle "the whole ecosystem is in a meme-stock regime" from "GME specifically has high attention."
+A single LSTM processes the concatenated `(K*D)` feature vector at each step. The hidden state provides implicit cross-ticker coupling (unlike ARIMA), but there is no explicit latent regime separation  -  the LSTM cannot disentangle "the whole ecosystem is in a meme-stock regime" from "GME specifically has high attention."
 
 ```python
 lstm = SharedLSTM(n_tickers=100, feature_dim=5, hidden_dim=512)
@@ -907,7 +907,7 @@ The research question is about *social* attention dynamics, not market microstru
 2. Conflate the *cause* (attention) with the *effect* (price movement)
 3. Make the finite-attention hypothesis test less clean
 
-The goal is to demonstrate that attention ecosystem dynamics alone — measured only through message counts and sentiment — contain enough information to identify regime transitions and cross-ticker dependencies.
+The goal is to demonstrate that attention ecosystem dynamics alone  -  measured only through message counts and sentiment  -  contain enough information to identify regime transitions and cross-ticker dependencies.
 
 ### Why the RSSM over a pure Transformer?
 
