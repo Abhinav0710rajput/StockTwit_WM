@@ -929,20 +929,6 @@ Training a separate MLP for bearish_rate would add parameters that the loss func
 
 ---
 
-## 15. Citation
-
-If you use this code or build on this work, please cite:
-
-```bibtex
-@article{rajput2025twitwave,
-  title   = {Twit Wave: A World Model for Collective Attention Dynamics in Financial Social Media},
-  author  = {Rajput, Abhinav},
-  journal = {Working paper},
-  year    = {2025},
-  note    = {NYU Stern School of Business}
-}
-```
-
 **Reference papers:**
 
 - Hafner, D., Lillicrap, T., et al. (2019). *Dream to Control: Learning Behaviors by Latent Imagination.* ICLR 2020.
@@ -951,4 +937,3 @@ If you use this code or build on this work, please cite:
 
 ---
 
-*For questions or collaboration inquiries: [abhinav1995rajput@gmail.com](mailto:abhinav1995rajput@gmail.com)*
