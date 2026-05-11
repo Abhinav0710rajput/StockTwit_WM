@@ -1,0 +1,6 @@
+event,event_week,event_kl,window_mean,window_std,z_score
+COVID onset,2020-02-17,56.663,54.729,2.304,0.839
+COVID market low,2020-03-23,49.118,53.416,1.202,-3.575
+Vaccine announcement,2020-11-09,52.312,53.393,2.439,-0.443
+GME squeeze,2021-01-25,54.502,54.182,1.229,0.26
+GME peak,2021-01-25,54.502,54.107,1.224,0.323
