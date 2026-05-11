@@ -50,7 +50,7 @@ NYU Center for Data Science
 
 ## 1. Project Overview
 
-**Twit Wave** is a *world model* for the collective attention dynamics of the StockTwits financial social network (2008–2022). The central hypothesis is that retail investor attention  -  measured by message volume and sentiment across hundreds of ticker symbols  -  is not an i.i.d. noise process but a low-dimensional latent regime that evolves over time.
+**Twit Wave** is a *world model* for the collective attention dynamics of the [StockTwits](https://stocktwits.com/) financial social network (2008–2022). The central hypothesis is that retail investor attention  -  measured by message volume and sentiment across hundreds of ticker symbols  -  is not an i.i.d. noise process but a low-dimensional latent regime that evolves over time.
 
 The model learns a **latent representation** `z_t` of the attention ecosystem at each week `t`, enabling:
 
