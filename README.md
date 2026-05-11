@@ -1,7 +1,7 @@
 # Twit Wave: A World Model for Collective Attention Dynamics in Financial Social Media
 
-**Abhinav Rajput** · NYU Stern School of Business  
-*Working paper — targeting Management Science*
+**Xingji "Jax" Li** · **Narayani Sai Pemmaraju** · **Abhinav Rajput**  
+NYU Center for Data Science
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
